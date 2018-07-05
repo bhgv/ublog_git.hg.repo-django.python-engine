@@ -1,0 +1,137 @@
+{% extends "cicero/base.html" %}
+{% load cicero %}
+
+
+
+{% block cicero_content %}
+
+<div id="content">
+{% block content %}{% endblock %}
+</div>
+
+{% endblock %}
+
+
+
+
+{% block moder_content %}
+
+{% if user.cicero_profile.moderator or user.is_superuser %}
+
+{% block aside %}{% endblock %}
+
+<ul style="border: 0 solid #ccc; border-width:1px 0 0 0; padding: 1px;">
+
+{% comment %}
+<div id="aside"> --- 
+{% endcomment %}
+
+<!-- 
+<ul id="moderators" class="block">
+-->
+  <li><a href="{% url all_deleted_articles %}">Все удаленные статьи</a>
+  <li><a href="{% url cicero.views.spam_queue %}">Спам</a>
+<!--
+</ul>
+-->
+
+{% comment %}
+<!--
+<ul id="misc" class="block">
+  <li><a href="{% url scipio_whitelist %}">OpenID whitelist</a>
+</ul>
+-->
+{% endcomment %}
+
+{% comment %}
+</div>
+{% endcomment %}
+
+</ul>
+
+{% endif %}
+
+{% endblock %}
+
+
+{% block footer_content %}
+
+{% if user.is_authenticated %}
+
+| <a href="#" onclick="javascript: showLoginForm();">Профиль {{ user }}</a>
+| <a href="cauth/logout/">Выйти</a>
+
+<div id="auth_form" style="display: block; height: 0; width: 0; overflow: hidden; z-index: 100; "> 
+  <form action="cauth/logout/" method="post" id="auth">
+  <table class="controls" style="text-align:center; background: yellow;">
+    <tr><td class="controls" style="background: yellow;">
+    <a href="{{ profile.get_absolute_url }}">{{ user }}</a>
+    </td></tr><tr><td class="controls" style="background: yellow;">
+    <button type="submit" style="display: inline; ">Выход</button>
+    <tr><td class="controls" style="background: yellow;">
+    <a href="#" onclick="javascript: hideForm('auth_form');">Отмена</a>
+  </td></tr>
+  </table>
+  </form>
+</div>
+{% else %}
+
+| <a href="#" onclick="javascript: showLoginForm();">Войти</a>
+| <a href="#" onclick="javascript: showRegForm();">Регистрация</a>
+
+<div id="auth_form" style="display: block; height: 0; width: 0; overflow: hidden; z-index: 100; ">
+{% comment %}
+<!--
+  <form action="{% url scipio_login %}" method="post" id="auth">
+-->
+{% endcomment %}
+  <form action="cauth/login/" method="post" id="auth">
+  <table class="controls" style="text-align:center; background: yellow;">
+    <tr><td class="controls" style="background: yellow;">
+    Login:
+    </td></tr><tr><td class="controls" style="background-color: yellow;">
+    <input type="text" name="openid_identity">
+    </td></tr><tr><td class="controls" style="background: yellow;">
+    Password:
+    </td></tr><tr><td class="controls" style="background: yellow;">
+    <input type="text" name="openid_password">
+    </td></tr><tr><td class="controls" style="background: yellow;">
+    <button type="submit">Вход</button>
+    <tr><td class="controls" style="background: yellow;">
+    <a href="#" onclick="javascript: hideForm('auth_form');">Отмена</a>
+    </td></tr>
+  </table>
+  </form>
+</div>
+
+<div id="reg_form" style="display: block; height: 0; width: 0; overflow: hidden; z-index: 100; "> 
+{% comment %}
+<!--
+  <form action="{% url scipio_login %}" method="post" id="auth">
+-->
+{% endcomment %}
+  <form action="cauth/newuser/" method="post" id="auth">
+  <table class="controls" style="text-align:center; background: yellow;">
+    <tr><td class="controls" style="background: yellow;">
+    Login:
+    </td></tr><tr><td class="controls" style="background-color: yellow;">
+    <input type="text" name="openid_identity">
+    </td></tr><tr><td class="controls" style="background: yellow;">
+    Password:
+    </td></tr><tr><td class="controls" style="background: yellow;">
+    <input type="text" name="openid_password">
+    </td></tr><tr><td class="controls" style="background: yellow;">
+    Email:
+    </td></tr><tr><td class="controls" style="background: yellow;">
+    <input type="text" name="email">
+    </td></tr><tr><td class="controls" style="background: yellow;">
+    <button type="submit">Регистрация</button>
+    <tr><td class="controls" style="background: yellow;">
+    <a href="#" onclick="javascript: hideForm('reg_form');">Отмена</a>
+    </td></tr>
+  </table>
+  </form>
+</div>
+{% endif %}
+
+{% endblock %}

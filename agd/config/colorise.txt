@@ -1,0 +1,8 @@
+
+\def{\cpp}{\text}\code_colorise{cpp}{\text}\enddef
+
+\def{\asm}{\text}\code_colorise{nasm}{\text}\enddef
+
+\def{\python}{\text}\code_colorise{nasm}{\text}\enddef
+
+

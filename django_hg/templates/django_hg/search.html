@@ -1,0 +1,76 @@
+{% extends "django_hg/base_repository.html" %}
+{% load i18n %}
+{% load django_hg_tags %}
+{% load search %}
+
+{% block title %}
+    {% trans 'Search results' %}
+{% endblock %}
+
+{% block content %}
+    <h3>
+        {% blocktrans count results|length as count %}
+            One result in the {{ max }} latest changesets
+        {% plural %}
+            {{ count }} results in the {{ max }} latest changesets
+        {% endblocktrans %}
+    </h3>
+    
+    {% regroup results by date as date_list %}
+    <ul class="grouped_list">
+        {% for date in date_list %}
+        <li><h4>{{ date.grouper }}</h4>
+            <ul class="list">
+                {% for result in date.list %}
+                    <li><span class="time">{{ result.time }}</span>
+                        {{ result.user|format_hg_user|highlight:q }} committed
+                        <a href="{% url hg-repo-action-rev repo "changesets" result.rev %}">
+                            {{ result.rev }}:{{ result.hash|highlight:q }}
+                        </a>
+                        {% blocktrans with result.files_count as count and result.files_count|pluralize as plural %}
+                            ({{ count }} file{{ plural }})
+                        {% endblocktrans %}
+                        <div class="pre">
+                            {{ result.description|linebreaksbr|highlight:q }}
+                            {% if result.files|length_is:0 %}
+                            {% else %}
+                                <ul class="list">
+                                    {% for file in result.files %}
+                                      <li>
+                                          <a href="{% url hg-repo-action-rev-path repo "browse" result.rev file %}">
+                                              {{ file|highlight:q }}
+                                          </a>
+                                      </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </ul>
+    {% comment %}
+    <ul class="list">
+    {% for result in results %}
+      <li><h4>{{ result.date }}</h4>
+          <span class="time">{{ result.time }}</span>
+          {{ result.user|format_hg_user|highlight:q }} committed
+          <a href="{% url hg-repo-action-rev repo "changesets" result.rev %}">
+              {{ result.rev }}:{{ result.hash }}
+          </a>
+          {% blocktrans with result.files_count as count and result.files_count|pluralize as plural %}
+              ({{ count }} file{{ plural }})
+          {% endblocktrans %}
+          <div class="pre">
+              {{ result.description|linebreaksbr|highlight:q }}<br/>
+              {{ result.in_files|highlight:q }}
+          </div>
+      </li>
+    
+    {% empty %}
+      {% trans "No result found" %}
+    {% endfor %}
+    {% endcomment %}
+    </ul>
+{% endblock %}

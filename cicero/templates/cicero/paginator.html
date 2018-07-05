@@ -1,0 +1,21 @@
+<div class="paginator">
+  <div class="links" style="display: block; align: right; padding: 0.2em;">
+    {% if page_obj.has_previous %}
+    <a href="?{{ query_string }}page={{ page_obj.previous_page_number }}" class="previous" style="display: inline; float: left;">←</a>
+    {% else %}
+    <span class="previous" style="display: inline; float: left;">←</span>
+    {% endif %}
+
+  <form action="./" method="get" style="display: inline; float: left;">
+    {{ form_input_string }}
+    <input type="text" name="page" value="{{ page_obj.number }}"> 
+    ({% if show_last_link %}<a href="?{{ query_string }}page=last">{{ paginator.num_pages }}</a>{% else %}{{ paginator.num_pages }}{% endif %})
+  </form>
+
+    {% if page_obj.has_next %}
+    <a href="?{{ query_string }}page={{ page_obj.next_page_number }}" class="next" style="display: inline; float: left;">→</a>
+    {% else %}
+    <span class="next" style="display: inline; float: left;">→</span>
+    {% endif %}
+  </div>
+</div>

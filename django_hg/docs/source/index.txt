@@ -1,0 +1,216 @@
+[TOC]
+
+# Using django_hg
+
+## Why use django_hg ?
+
+[django_hg [en]][_django_hg] aims to allow browsing a [Mercurial [en]]
+[_mercurial] repository into a [django [en]][_django] project.
+
+Even if Mercurial has a built-in webserver, I think there's room for a
+django-integrated solution:
+
+* better integration with other components of the website, especially for the
+  graphics. django templates are much easy to understand than Mercurial
+  templates.
+* allow to browse more than one repository, without installing `hgwebdir.cgi`.
+* django authentication
+* links with a django-powered bug tracker such as
+  [django-projectmgr [en]][_django_projectmgr] (to-do)
+
+Currently, this project is in his early stages of development and not all
+features of the Mercurial integrated webserver are implemented. If you need an
+out-of-box ready solution, you should currently use Mercurial built-in
+webserver. You may want to read [Mercurial: The Definitive Guide [en]][_hg_book],
+and especially the [Chapter 6 [en]][_hg_book_ch_6], for more informations about
+configuring Mercurial webserver.
+
+## Install
+
+django_hg follows [django reusable apps conventions [en]][_django_reusable_apps]
+and install is quite easy:
+
+Clone `django_hg` from [bitbucket [en]][_bitbucket] somewhere in your
+`PYTHONPATH`:
+
+    :::SH
+    $ hg clone https://bitbucket.org/nautilebleu/django_hg/ django_hg
+
+Configure your `settings.py`:
+
+    :::Python
+    # /PROJECT/APP/settings.py
+    # django_hg settings
+    DJANGO_HG_REPOSITORIES_DIR = {
+      "public": "/Users/goulwen/Repositories/public/",
+      "private": "/Users/goulwen/Repositories/private/"
+    }
+    DJANGO_HG_PAGER_ITEMS = 30
+    # one of pygment styles : autumn, borland, bw, colorful, default, emacs,
+    # friendly, fruity, manni, murphy, native, pastie, perldoc, tango, trac, vim,
+    # vs
+    DJANGO_HG_PYGMENT_STYLE = 'tango'
+    # The maximum of search results returned when performing a search in a repository
+    DJANGO_HG_MAX_SEARCH_RESULTS = 100
+
+    # templates dir
+    TEMPLATE_DIRS = (
+        os.path.join(os.path.dirname(__file__), 'templates'),
+        '/Users/goulwen/Dev/Python/django_hg/templates',
+    )
+    
+    # if not already done, add the DJANGO.CORE.CONTEXT_PROCESSORS.REQUEST and
+    # the DJANGO.CORE.CONTEXT_PROCESSORS.MEDIA to settings
+    TEMPLATE_CONTEXT_PROCESSORS = (
+        'django.core.context_processors.request',
+        'django.core.context_processors.media',
+    )
+
+    # add to installed apps
+    INSTALLED_APPS = (
+        # …
+        'django_hg',
+    )
+
+Configure your project's `urls.py`:
+
+    :::Python
+    # /PROJECT/urls.py
+    urlpatterns = patterns('',
+        # …
+        (r'^hg/', include('django_hg.urls')),
+    )
+
+That's it.
+
+You can now run the django built-in webserver:
+
+    :::SH
+    $ python manage.py runserver
+
+
+## Usage
+
+### Administration
+
+Repositories can be created in django_hg using the admin module within the
+django admin site.
+
+You can import a repository by putting it in the folder of your choice (public
+or private) and then create a repository object with the same name in the admin.
+
+Because django `SlugField` are restricted to letters, numbers, underscores and
+hyphens, the name of the repository root folder must match these restrictions.
+
+For exemple, `mozilla-1.9.1` is not a valid name, but `mozilla-1_9_1` is.
+
+django_hg allows setting permissions to users throught an inline form. There's 3
+roles `Read`, `Read/Write` and `Owner`. These roles are used for displaying
+repositories in browsers and when handling commands like `clone`, `push` and
+`pull`.
+
+### Public
+
+#### List
+
+django_hg lets you browse a list of repositories, depending of the user
+permissions:
+
+* If the user is anonymous, only public repositories are displayed.
+* If the user is authenticated, private repositories where the user has role are
+  displayed, plus public ones.
+
+A search facility is available. Currently, search looks in repositories' title
+and summary, but not in the source code or the changelog.
+
+Results can also be filtered using current user permissions, so only
+repositories he owned are displayed, for example.
+
+#### Repository
+
+When accessing a repository, you can display 3 differents views:
+
+* The `overview` view summarizes the repository, showing the latest changeset
+  (aka `tip` in Mercurial, people involved in the project. This page will evolve
+  in the next weeks to be raffined.
+* The `browse` view displays the repository at a given revision (`tip` by default)
+* The `changesets`view diplays the list of revisions of the repository.
+  You can browse the repository at a given revision or display the changelog
+  details.
+
+#### File
+
+From the `browse` and the `changeset` views, repository files can be accessed:
+
+* The `log` view displays changes history of the file.
+* The `view` view shows the file, depending of its mimetype:
+  * If a [Pygments [en]][_pygments] lexer can be found, the file is displayed
+    with syntax coloration
+  * If the mimetype corresponds to a picture (PNG, GIF, JPEG) or a PDF, the file
+    is displayed
+  * Otherwise, you can download it or force the display a plain text.
+* The `diff` view will allow the comparison between two revisions, but is far
+  from being operational yet.
+
+### Hg commands (clone, push and pull)
+
+django_hg supports `clone`, `push` and `pull` over HTTP throught django,
+including authentication.
+
+## Templating
+
+django_hg tries to follow
+[django reusable apps conventions [en]][_django_reusable_apps] in naming of
+blocks.
+
+A simple CSS is provided in the `site_media` directory. Feel free to
+
+
+## Deployment
+
+Because django_hg relies on wsgi objects to performs Mercurial commands, django
+must be deployed throught [mod_wsgi [en]][_django_deployement_mod_wsgi].
+
+The Apache vhost configuration must contains the following directive in
+order to [pass authentication [en]][_wsgipassauthorization] to django:
+
+    :::apacheconf
+    WSGIPassAuthorization On
+
+## To-dos
+
+* Add missing features such as search in list, changesets, filelog
+* `diff` and `archive`
+* Add Ajax browsing for the repository
+
+## Requirements
+
+* [Python 2.5+ [en]][_python]
+* [Mercurial 1.2 [en]][_mercurial]
+* [django 1.0.2 [en]][_django]
+* [Pygments [en]][_pygments]
+
+For deployement:
+
+* [Apache 2.2 [en]][_apache]
+* [mod_wsgi [en]][_mod_wsgi]
+* [MySQL [en]][_mysql] or [PostgreSQL [en]][_postgresql]
+
+
+
+[_apache]: http://httpd.apache.org/
+[_bitbucket]: http://bitbucket.org/
+[_django]: http://djangoproject.com/
+[_django_deployement_mod_wsgi]: http://docs.djangoproject.com/en/1.0/howto/deployment/modwsgi/
+[_django_hg]: http://bitbucket.org/nautilebleu/django_hg/
+[_django_projectmgr]: http://opensource.washingtontimes.com/projects/django-projectmgr/
+[_django_reusable_apps]: http://ericholscher.com/projects/django-conventions/app/
+[_hg_book]: http://hgbook.red-bean.com/
+[_hg_book_ch_6]: http://hgbook.red-bean.com/read/collaborating-with-other-people.html
+[_mercurial]: http://selenic.com/mercurial/
+[_mysql]: http://www.mysql.com/
+[_postgresql]: http://www.postgresql.org/
+[_python]: http://python.org/
+[_pygments]: http://pygments.org
+[_mod_wsgi]: http://code.google.com/p/modwsgi/
+[_wsgipassauthorization]: http://www.arnebrodowski.de/blog/508-Django,-mod_wsgi-and-HTTP-Authentication.html

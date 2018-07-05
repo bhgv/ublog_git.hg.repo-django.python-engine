@@ -1,0 +1,6 @@
+\def{\basmp}
+\table
+\align{ . }
+\row{\par{\i{\url{http://basmp.narod.ru}basmp\endurl\~\b{\(c)}\~ 2010}}}
+\endtable
+\enddef\par{} 

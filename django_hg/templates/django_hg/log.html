@@ -1,0 +1,82 @@
+{% extends "django_hg/base_repository.html" %}
+{% load i18n %}
+{% load django_hg_tags %}
+
+{% block title %}
+    {% blocktrans with file|strip_path as file %}
+        Log of {{ file }}
+    {% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+    {% path %}
+    
+{% comment %}
+    — <a href="{{ referer_url }}">{% trans 'Back' %}</a>
+{% endcomment %}
+
+    <form action="{% url hg-repo-action-rev-path repo "changesets" "tip" file %}">
+        <h2>
+            {% blocktrans with file|strip_path as file %}
+                Log of “{{ file }}”
+            {% endblocktrans %}
+        </h2>
+        <p />
+        
+{% comment %}
+        <div>
+          <input type="submit" name="submit" value="Diff" class="float_right" />
+        </div>
+{% endcomment %}
+
+        {% if form.errors %}
+            <ol>
+                <li>{% trans 'The "from" revision must be lower than the "to" revision.' %}</li>
+            </ol>
+        {% endif %}
+        
+        {% regroup filelog by date as date_list %}
+        <ol>
+            {% for date in date_list %}
+            <li><h3>{{ date.grouper }}</h3>
+                {% for c in date.list %}
+                    <div style="float:left;">{{ c.time }}&nbsp;
+                        {{ c.user|format_hg_user }} committed <a href="{% url hg-repo-action-rev repo "changesets" c.rev %}">r{{c.rev }}:{{c.hash}}</a>
+                    </div>
+                    <div class="control" style="color: brown;">
+                        <a href="{% url hg-repo-action-rev-path repo "browse" c.rev file %}" class="ctllink">
+                            {% trans 'View' %}
+                        </a> | 
+                        {% if forloop.parentloop.first and forloop.parentloop.last %}
+                            <input type="radio" name="from_rev"
+                                {% ifequal from_rev c.rev %}checked="checked"{% endifequal %} 
+                                {% if forloop.first %}disabled="disabled"{% endif %} 
+                                value="{{ c.rev }}">From rev</input>
+                            <input type="radio" name="to_rev"
+                                {% ifequal to_rev c.rev %}checked="checked"{% endifequal %}
+                                {% if forloop.last %}disabled="disabled"{% endif %} 
+                                value="{{ c.rev }}">To rev</input>
+                        {% else %}
+                            <input type="radio" name="from_rev"
+                                {% ifequal from_rev c.rev %}checked="checked"{% endifequal %} 
+                                {% if forloop.parentloop.first %}disabled="disabled"{% endif %} 
+                                value="{{ c.rev }}">From rev</input>
+                            <input type="radio" name="to_rev"
+                                {% ifequal to_rev c.rev %}checked="checked"{% endifequal %}
+                                {% if forloop.parentloop.last %}disabled="disabled"{% endif %} 
+                                value="{{ c.rev }}">To rev</input>
+                        {% endif %}
+                    </div>
+                    <table style="width:100%;"><tr><td>
+                        <pre>{{ c.description|linebreaksbr }}</pre>
+                    </td></tr></table>
+                    
+                {% endfor %}
+            {% endfor %}
+        </ol>
+        
+        <div>
+          <input type="submit" name="submit" value="{% trans 'Diff' %}" class="float_right" />
+        </div>
+    </form>
+{% endblock %}

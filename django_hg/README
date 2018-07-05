@@ -1,0 +1,8 @@
+django_hg aims to allow browsing a Mercurial repository into a django project.
+
+This project is in his early stages and not all features of the Mercurial
+integrated webserver are implemented.
+
+If you have any questions about the django_hg project, please contact
+Goulwen Reboux <nautilebleu@gmail.com>. You can also read the doc provided
+with django_hg in the doc/ repository

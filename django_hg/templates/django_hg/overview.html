@@ -1,0 +1,62 @@
+{% extends "django_hg/base_repository.html" %}
+{% load i18n %}
+{% load django_hg_tags %}
+
+{% block title %}
+    {% blocktrans %}
+        Overview of {{ repo }}
+    {% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+
+        <table style="width:100%;">
+        <tr><td style="width:10em;">
+            <b>{% trans 'Summary' %}</b>
+        </td>
+        <td>
+            <pre>{{ repo.summary }}</pre>
+        </td></tr>
+        <tr><td>
+            <b>{% trans 'Status' %}</b>
+        </td>
+        <td>
+            {% ifequal repo.anonymous_access 1 %}
+                {% trans 'Public' %}
+            {% else %}
+                {% trans 'Private' %}
+            {% endifequal %}
+        
+        {% if repo.members %}
+        </td></tr>
+        <tr><td>
+            <b>{% trans 'People involved' %}</b>
+        </td>
+        <td>
+            {% for member in repo.members %}
+                {% ifchanged member.permission %}
+                    {% if not forloop.first %}
+                      </dl>
+                    {% endif %}
+                    <dl><dt>{{ member.get_permission_display|capfirst }}</dt>
+                {% endifchanged %}
+                <dd> {{ member.user }}</dd>
+            {% endfor %}
+            </dl>
+        {% endif %}
+        
+        {% comment %}
+        <h4>{% trans 'Stats' %}</h4>
+        {{ repo.get_size|filesizeformat }}
+        {% endcomment %}
+
+        </td></tr>
+        <tr><td>
+            <b>{% trans 'Latest changeset' %}</b>
+        </td>
+        <td>
+         {% include 'django_hg/changeset_info.html' %}
+        </td></tr>
+        </table>
+
+{% endblock %}

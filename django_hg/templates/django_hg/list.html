@@ -1,0 +1,147 @@
+{% extends "django_hg/base_hg.html" %}
+{% load i18n %}
+{% load django_hg_tags %}
+{% load search %}
+
+{% block title %}
+    {% trans 'Repositories' %}
+{% endblock %}
+
+
+{% block content_title %}
+    {% url hg-list as list_url %}
+    {% url hg-list-all as list_all_url %}
+
+    <div id="breadcrumb">
+        {%  trans 'Repositories' %}
+    </div>
+    <h2>
+        {% ifequal max 0 %}
+            {% blocktrans  %}
+                No repository
+            {% endblocktrans %}
+        {% else %}
+            {% ifequal max 1 %}
+                {% blocktrans  %}
+                    1 repository/1
+                {% endblocktrans %}
+            {% else %}
+                {% blocktrans  %}
+                    Repositories {{ start }}-{{ end }}/{{ max }} 
+                {% endblocktrans %}
+            {% endifequal %}
+        {% endifequal %}
+    </h2>
+    <div id="tools">
+    
+      <table class="controls" style="display: block; padding: 0.5em; width: 100%;">
+      <tr><td class="controls">
+
+        <span style="display: block; float: right;">
+          <form id="search_form" action="{% url hg-list %}" method="get">
+            {{ form }}
+            <label style="float: left;">&nbsp;</label>
+            <button type="submit" style="float: left;">{% trans 'OK' %}</button>
+          </form>
+        </span>
+
+      </td></tr>
+      <tr><td class="controls">
+
+
+      </td></tr>
+    </table>
+
+    
+{% comment %}
+        <form action="{% url hg-list %}" method="get">
+            <ul>
+                {{ form }}
+                <li>
+                    <input type="submit" value="OK" />
+                </li>
+            </ul>
+        </form>
+{% endcomment %}
+
+        <p>{% trans "You can search within repositories' names and summary, but not in their content nor their revisions" %}</p>
+   
+        <div class="control" style="color: brown;">
+            {% if request.user.is_authenticated %}
+                <a href="{{ list_url }}" class="ctllink">{% trans "My repositories" %}</a>
+                <a href="{{ list_all_url }}" class="ctllink">{% trans "All repositories" %}</a>
+            {% else %}
+                <a href="{{ list_url }}" class="ctllink">{% trans "All repositories" %}</a>
+            {% endif %}
+        </div>
+
+{% comment %}
+        <ul class="tabs">
+            {% if request.user.is_authenticated %}
+                <li class="{% active request list_url %}">
+                    <a href="{{ list_url }}">{% trans "My repositories" %}</a>
+                </li>
+                <li class="{% active request list_all_url %}">
+                    <a href="{{ list_all_url }}">{% trans "All repositories" %}</a>
+                </li>
+            {% else %}
+                <li class="{% active request list_url %}">
+                    <a href="{{ list_url }}">{% trans "All repositories" %}</a>
+                </li>
+            {% endif %}
+        </ul>
+{% endcomment %}
+
+    </div>
+{% endblock %}
+
+{% block content %}
+    <ol>
+        {% for repo in repositories %}
+        <li class="topics">
+        <div class="usertext">
+            <h3>
+                <a href="{% url hg-repo repo %}">{{repo.name|highlight:terms}}</a>
+            </h3>
+            
+            <table style="width: 100%;">
+            <tr><td>
+               {{ repo.summary|highlight:terms }}
+            </td></tr><tr><td>
+                <span class="access">
+                    {% ifequal repo.anonymous_access 1 %}
+                        <span class="public">{% trans 'Public' %}</span>
+                    {% else %}
+                        <span class="private">{% trans '[Private]' %}</span>
+                    {% endifequal %}
+                </span>
+            </td></tr><tr><td>
+            {% with repo.get_context as ctx %}
+              {% include 'django_hg/changeset_info.html' %}
+            {% endwith %}
+            </td></tr>
+            </table>
+
+            <div class="control" style="color: brown;">
+                <a href="{% url hg-repo-action repo "browse" %}" class="ctllink">{% trans 'Browse' %}</a> | 
+                <a href="{% url hg-repo-action repo "changesets" %}" class="ctllink">{% trans 'History' %}</a>
+            </div>
+
+{% comment %}
+            <ul class="links">
+                <li class="browse">
+                    <a href="{% url hg-repo-action repo "browse" %}">{% trans 'Browse' %}</a>
+                </li>
+                <li class="changesets">
+                    <a href="{% url hg-repo-action repo "changesets" %}">{% trans 'History' %}</a>
+                </li>
+            </ul>
+{% endcomment %}
+        </div>
+        </li>
+        {% endfor %}
+    </ol>
+    <ul>
+        {% paginate %}
+    </ul>
+{% endblock  %}

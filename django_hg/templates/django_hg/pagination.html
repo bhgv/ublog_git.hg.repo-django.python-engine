@@ -1,0 +1,27 @@
+{% load i18n %}
+
+{% if is_paginated %}
+<div class="pagination">
+    {% ifequal page 1 %}
+        <span class="disabled prev">&lsaquo;&lsaquo; {% trans "previous" %}</span>
+    {% else %}
+        <a href="?page={{ previous }}{{ getvars }}" class="ctllink">&lsaquo;&lsaquo; {% trans "previous" %}</a>
+    {% endifequal %}
+    {% for item in pages %}
+        {% ifequal item 'ellipsis' %}
+            …
+        {% else %}
+            {% ifequal page item %}
+                <span class="current page">{{ item }}</span>
+            {% else %}
+                <a href="?page={{ item }}{{ getvars }}" class="ctllink">{{ item }}</a>
+            {% endifequal %}
+        {% endifequal %}
+    {% endfor %}
+    {% ifnotequal page pages_count %}
+        <a href="?page={{ next }}{{ getvars }}" class="ctllink">{% trans "next" %} &rsaquo;&rsaquo;</a>
+    {% else %}
+        <span class="disabled next">{% trans "next" %} &rsaquo;&rsaquo;</span>
+    {% endifnotequal %}
+</div>
+{% endif %}

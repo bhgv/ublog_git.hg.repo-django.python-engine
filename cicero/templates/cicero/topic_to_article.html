@@ -1,0 +1,53 @@
+{% extends "cicero/auth.html" %}
+
+{% block cicero_title %}Оформление поста в статью{% endblock %}
+
+{% block content %}
+
+<h2>Оформление поста в статью</h2>
+
+<form action="./" method="post" id="to_article">
+    <table style="margin: 1em;">
+    <tr><td style="width: 40em;">
+    
+    {{ form.article_topics }}
+    </td></tr><tr><td>
+    <label for="id_subject">{{ form.subject.label }}</label>
+    {{ form.subject }}
+    {% if form.subject.errors %}<em class="error">{{ form.subject.errors|join:", " }}</em>{% endif %}
+    
+    </td></tr>
+    </table>
+    
+  <div id="reference">
+    <p>Автор: {% if article.from_guest %}{{ article.guest_name }}{% else %}{{ article.author.user }}{% endif %}
+    <div>
+      <p>Текст:<p>
+      <div class="usertext">{{ article.html }}</div>
+    </div>
+  </div>
+  <p>
+  
+
+  <table>
+    <caption>Включить еще посты</caption>
+    {% for id, article in form.fields.articles.choices %}
+    <tr>
+      <td><input type="checkbox" name="articles" value="{{ id }}">
+      <td>{% if article.from_guest %}{{ article.guest_name }}{% else %}{{ article.author.user }}{% endif %}
+      <td>{{ article.html|truncatewords_html:30 }}
+    {% endfor %}
+  </table>
+  {% if form.articles.errors %}<em class="error">{{ form.articles.errors|join:", " }}</em>{% endif %}
+
+  <div class="buttons"><button type="submit">Оформить</button></div>
+</form>
+
+{% endblock %}
+
+{% block aside %}
+<ul id="breadcrumbs" class="block">
+  <li><a href="{% url cicero.views.topic article.topic.forum.slug,article.topic.id %}">Топик</a>
+</ul>
+
+{% endblock %}

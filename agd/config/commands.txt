@@ -1,0 +1,517 @@
+# defaults
+# --------
+\page
+#b: <HTML><HEAD><TITLE>Test</TITLE>
+#b: <META http-equiv="Content-Type" content="text/html"/>
+#b: <meta http-equiv="content-type" content="text/html; charset=utf-8">
+#b: <LINK rel="stylesheet" type="text/css" href="test.styles.css"/>
+b:
+#b: </HEAD>
+#b: <BODY>
+#e: </BODY>
+#e: </HTML>
+e: 
+
+\par
+p: y
+b: <P>
+e: </P>
+
+\first_par
+p: y
+#b: <P id="fst">
+b: <P fst="1">
+e: </P>
+
+
+
+#  tables
+#  ------
+\table_def
+p: y
+b: <TABLE class="tbl" width="95%" border="0" cellspacing="1px" cellpadding="5px">
+e: </TABLE>
+
+\table_name
+p: y
+b: <FONT style="margin-left:1em">&nbsp;<I>
+e: </I></FONT>
+
+
+
+\table_hdr_line
+p: y
+b: <TR>
+e: </TR>
+
+\table_hdr_cell
+p: y
+b: <TH>
+e: </TH>
+
+
+\table_line
+p: y
+b: <TR>
+e: </TR>
+
+#\thr_open       [<TR>]
+#\thr_close      [</TR>]
+
+#\th_open        [<TH>]
+#\th_close       [</TH>]
+
+\table_cell
+p: y
+b: <TD>
+e: </TD>
+
+\table_cell_r
+p: y
+b: <TD style="text-align:right">
+e: </TD>
+
+\table_cell_l
+p: y
+b: <TD style="text-align:left">
+e: </TD>
+
+\table_cell_c
+p: y
+b: <TD style="text-align:center">
+e: </TD>
+
+\table_cell_j
+p: y
+b: <TD style="text-align:justify">
+e: </TD>
+
+
+
+
+
+
+
+
+
+
+
+# user
+# ----
+\title
+# comment
+p: y
+b: <H1>
+e: </H1>
+
+\subtitle
+b: <SPAN class="subtitle"><BR>
+e: </SPAN>
+
+\h1
+p: y
+b: <H2>
+#e: <A name="toc0001"></A></H2>
+e: </H2>
+
+\h2
+p: y
+b: <H3>
+#e: <A name="toc0002"></A></H3>
+e: </H3>
+
+\h3
+p: y
+b: <H4>
+#e: <A name="toc0003"></A></H4>
+e: </H4>
+
+\raw
+#p: y
+#b: <CODE>
+b: <pre>
+#e: </CODE>
+e: </pre>
+
+\sub
+b: <SUB>
+e: </SUB>
+
+\sup
+b: <SUP>
+e: </SUP>
+
+
+
+
+#\code
+#b: <PRE>
+#e: </PRE>
+
+\code_box_begin
+s: y
+b: <p><TABLE width="95%" border="0" cellspacing="0" cellpadding="0"><TR><TD><PRE>
+
+\code_box_end
+b: </PRE></TD></TR></TABLE><FONT style="margin-left:1em"><I>
+e: </I></FONT></p>
+
+\as_is
+b: <TABLE width="95%" border="0" cellspacing="0" cellpadding="0"><TR><TD><PRE>
+e: </PRE></TD></TR></TABLE>
+
+\note
+b: <TABLE class="note" width="95%"><TR><TD><B>NOTE</B><BR/>
+e: </TD></TR></TABLE>
+
+\warning
+b: <TABLE class="warning" width="95%"><TR><TD><B>IMPORTANT!</B><BR/>
+e: </TD></TR></TABLE>
+
+\tip
+b: <TABLE class="tip" width="95%"><TR><TD><B>TIP</B><BR/>
+e: </TD></TR></TABLE>
+
+
+\url
+b: <A href="
+e: ">
+
+\endurl
+s: y
+b: </A>
+
+\img
+b: <IMG src="
+e: " border="2" style="border-color:#FFFFFF"/>
+
+\imgc
+b: <TABLE width="95%"><TR><TD><CENTER><IMG src="
+e: " border="0"/></CENTER></TD></TR></TABLE>
+
+\imgl0
+b: <span style="block:inline;float:left;"><IMG src="
+e:" border="2" style="border-color:#FFFFFF"/></span>
+
+\imgl
+b: <TABLE align="left"><TR><TD><CENTER><IMG src="
+e: " border="0"/></CENTER></TD></TR></TABLE>
+
+\imgr0
+b: <IMG src="
+e: " title="" align="right" border="2" style="border-color:#FFFFFF"/>
+
+\imgr
+b: <TABLE align="right"><TR><TD><CENTER><IMG src="
+e: " title="" border="0"/></CENTER></TD></TR></TABLE>
+
+
+
+\toc
+s: y
+b: <style type=\"text/css\">
+b: .dialog {
+b:    left: 50%;
+b:    margin-left: -315px;
+b:    width: 630px;
+b: 
+b:    position: absolute;
+b:    z-index: 100001;
+b: }
+b: .dialog .body {
+b:    padding: 40px 13px 10px 40px;
+b: }
+b: 
+b: 
+b: 
+b: </style>
+b: 
+b: <div class="dialog" style="display: block; top: 236px; opacity: 1;">
+b: <div class="body">
+b: <div class="content">
+b: something...
+b: </div>
+b: </div>
+b: </div>
+b: 
+
+
+
+\hr
+s: y
+b: <hr />
+
+
+\dots
+s: y
+b: <SPAN class="larger">&#133;</SPAN>
+
+\---
+s: y
+v: \u2014
+b: <SPAN class="larger">&#0151;</SPAN>
+
+\--
+s: y
+v: \u2013
+b: <SPAN class="larger">&#0150;</SPAN>
+
+\<-
+s: y
+b: <SPAN class="larger">&#8592;</SPAN>
+
+\->
+s: y
+b: <SPAN class="larger">&#8594;</SPAN>
+
+\<->
+s: y
+b: <SPAN class="larger">&#8596;</SPAN>
+
+\(c)
+s: y
+v: \u169
+b: <SPAN class="larger">&#169;</SPAN>
+
+\(r)
+s: y
+v: \u174
+b: <SPAN class="larger">&#174;</SPAN>
+
+\(tm)
+s: y
+v: \ux2122
+b: <SPAN class="larger">&#0153;</SPAN>
+
+\sect
+s: y
+v: \uxa7
+b: <SPAN class="larger">&#0167;</SPAN>
+
+
+\TeX
+s: y
+b: <B>T<SUB>E</SUB>X</B>
+
+
+
+
+\lneg
+#b: <div style="height:100%; width:100%; position:relative; ">
+#b: <span style="display:inline-block; position:relative;">
+#b: <span style="position:relative; height: 5px; z-index:2;">&#0151;</span>
+b: <span style="display:inline-block; position:relative; border-top-width:1px; border-top-style:solid; padding: 1px;">
+#b: <span style="display:block; position:relative; z-index:1; border-top-width:1px; border-top-style:solid; padding: 1px;">
+e: </span>
+#e: </span>
+
+#b: <span style="position:absolute;">
+#b: <table style="position:relative; top=100%;">
+#b: <tr><td>
+#b: _
+#b: </td></tr>
+#b: <tr><td>
+#e: </td></tr>
+#e: </table>
+#e: </span>
+
+
+\b
+b: <b>
+e: </b>
+
+\i
+b: <i>
+e: </i>
+
+\s
+b: <s>
+e: </s>
+
+\'
+b: &#145;
+e: &#146;
+
+\"
+b: &#147;
+e: &#148;
+
+\~
+s: y
+v: \ux20
+b: &nbsp;
+
+\\
+s: y
+v: \ux5c
+b: &#092;
+
+\o
+s: y
+v: \uxb0
+b: &#176;
+
+\u
+s: y
+v: \uxb5
+b: &#181;
+
+\cdot
+s: y
+v: \uxb7
+b: &#183;
+
+\+-
+s: y
+v: \uxb1
+b: &#177;
+
+\oo
+s: y
+v: \ux221e
+b: &#8734;
+
+\>=
+s: y
+v: \ux2265
+b: &#8805;
+
+\<=
+s: y
+v: \ux2264
+b: &#8804;
+
+\~=
+s: y
+v: \ux2248
+b: &#8776;
+
+\!=
+s: y
+v: \ux2260
+b: &#8800;
+
+\lnot
+s: y
+v: \uxac
+b: &#172;
+
+\land
+s: y
+v: \ux2227
+b: <SPAN class="larger">&#8743;</SPAN>
+
+\lor
+s: y
+v: \ux2228
+b: <SPAN class="larger">&#8744;</SPAN>
+
+\lxor
+s: y
+v: \ux2295
+b: <SPAN class="larger">&#8853;</SPAN>
+
+\isin
+s: y
+v: \ux2208
+b: <SPAN class="larger">&#8712;</SPAN>
+
+\notin
+s: y
+v: \ux2209
+b: <SPAN class="larger">&#8713;</SPAN>
+
+\forall
+s: y
+v: \ux2200
+b: <SPAN class="larger">&#8704;</SPAN>
+
+\exist
+s: y
+v: \ux2203
+b: <SPAN class="larger">&#8707;</SPAN>
+
+\dif
+s: y
+v: \ux2202
+b: &#8706;
+
+\del
+s: y
+v: \ux2206
+b: <SPAN class="larger">&#8710;</SPAN>
+
+\sum
+s: y
+v: \ux2211
+b: <SPAN class="larger">&#8721;</SPAN>
+
+\prod
+s: y
+v: \ux220f
+b: <SPAN class="larger">&#8719;</SPAN>
+
+\int
+s: y
+v: \ux222b
+b: <SPAN class="larger">&#8747;</SPAN>
+
+\radic
+s: y
+v: \ux221a
+b: <SPAN class="larger">&#8730;</SPAN>
+
+\empty
+s: y
+v: \ux2205
+b: <SPAN class="larger">&#8709;</SPAN>
+
+\nabla
+s: y
+v: \ux2207
+b: <SPAN class="larger">&#8711;</SPAN>
+
+\pi
+s: y
+v: \ux3c0
+b: &#960;
+
+\Om
+s: y
+v: \ux2126
+b: <SPAN class="larger">&#8486;</SPAN>
+
+\No
+s: y
+v: \ux2116
+b: <SPAN class="larger">&#8470;</SPAN>
+
+
+
+
+\comment
+b: <!--
+e: -->
+
+
+\enumerate
+#b: <TABLE border="0"><TR><TD width="20px"></TD><TD style="text-align:justify">
+b: <P><OL>
+e: </OL></P>
+#e: </TD></TR></TABLE>
+
+\itemize
+#b: <TABLE border="0"><TR><TD width="20px"></TD><TD style="text-align:justify">
+b: <P><UL type="disc">
+e: </UL></P>
+#e: </TD></TR></TABLE>
+
+\*
+b: <LI>
+e: </LI>
+
+\n
+s: y
+b: <br />
+
+

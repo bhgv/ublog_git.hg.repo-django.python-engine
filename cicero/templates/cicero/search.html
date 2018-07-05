@@ -1,0 +1,37 @@
+{% extends "cicero/auth.html" %}
+{% load cicero %}
+
+{% block cicero_title %}Поиск по форуму {{ forum }}{% endblock %}
+
+{% block content %}
+
+<h2>Поиск по форуму "{{ forum }}"</h2>
+
+<form id="search_form">
+  <p><input type="search" name="term" value="{{ term }}">
+  <div class="buttons"><button type="submit">Искать</button></div>
+</form>
+
+{% if term %}
+
+{% if page_obj.object_list %}
+
+{% paginator %}
+{% topic_list_block page_obj.object_list %}
+{% paginator %}
+
+{% else %}
+<p id="empty">Ничего не найдено.
+{% endif %}
+
+{% endif %}
+
+{% endblock %}
+
+{% block aside %}
+<ul id="breadcrumbs" class="block">
+  <li id="index_link"><a href="{% url cicero_index %}">Начало</a>
+  <li><a href="{% url cicero.views.forum forum.slug %}">{{ forum }}</a>
+</ul>
+
+{% endblock %}

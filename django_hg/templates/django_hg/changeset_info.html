@@ -1,0 +1,11 @@
+{% load i18n %}
+{% load django_hg_tags %}
+
+<h4>{{ ctx.date }}</h4>
+    <span class="time">{{ ctx.time }}</span>
+        {{ ctx.user|format_hg_user }} committed
+        r{{ ctx.rev }}:{{ ctx.hash }}
+        {% blocktrans with ctx.files_count as count and ctx.files_count|pluralize as plural %}
+            ({{ count }} file{{ plural }})
+        {% endblocktrans %}
+        <div class="pre">{{ ctx.description|linebreaksbr }}</div>

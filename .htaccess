@@ -1,0 +1,8 @@
+RewriteEngine On
+RewriteBase /
+RewriteRule ^(media/.*)$ - [L]
+RewriteRule ^(files/.*)$ - [L]
+RewriteRule ^(css/.*)$ - [L]
+RewriteRule ^(admin_media/.*)$ - [L]
+RewriteRule ^(wsgi\.py/.*)$ - [L]
+RewriteRule ^(.*)$ bhgv/wsgi.py/$1 [QSA,PT,L]

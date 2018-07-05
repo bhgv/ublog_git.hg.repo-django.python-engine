@@ -1,0 +1,30 @@
+{% extends "django_hg/base_repository.html" %}
+{% load i18n %}
+{% load django_hg_tags %}
+
+{% block title %}
+    {% blocktrans with file|strip_path as file %}
+        Diff of {{ file }} between revisions {{ from_rev }}-{{ to_rev }}
+    {% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+    {% path %}
+    <h3>
+        {% blocktrans with file|strip_path as file %}
+            Diff of “{{ file }}” between revisions {{ from_rev }}-{{ to_rev }}
+        {% endblocktrans %}
+    </h3>
+    <div class="file_wrapper">
+        <div class="diff">
+            <table style="width:100%;">
+            {% for line in diff %}
+                <tr class="{% hg_diff_class line %}">
+                    <td>
+                    {{ line }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

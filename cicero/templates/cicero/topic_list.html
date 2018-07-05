@@ -1,0 +1,77 @@
+{% extends "cicero/auth.html" %}
+{% load cicero %}
+
+{% block cicero_title %}Форум {{ forum }}{% endblock %}
+
+{% block cicero_extrahead %}<link rel="alternate" type="application/atom+xml" href="{% url cicero_feeds url="articles" %}{{ forum.slug }}/">{% endblock %}
+
+{% block content %}
+
+<h2>{{ forum }}</h2>
+
+<table class="controls" style="display: block; padding: 0.5em; width: 100%;">
+<tr><td class="controls">
+
+<span style="display: block; float: right;">
+<form id="search_form" action="{% url cicero.views.search forum.slug %}" method="get">
+  <input type="search" name="term" style="width: 30em; float: left;">
+  <label style="float: left;">&nbsp;</label>
+  <button type="submit" style="float: left;">Искать</button>
+</form>
+</span>
+
+</td></tr>
+<tr><td class="controls">
+
+{% paginator %}
+
+</td></tr>
+<tr><td class="controls">
+
+{% setnews object_list %}
+{% topic_list_block object_list %}
+
+</td></tr>
+<tr><td class="controls">
+
+{% paginator %}
+
+</td></tr>
+</table>
+
+
+{% if user.is_authenticated and is_user_can_add_topic_or_article and forum.is_forum %}
+{% post_form form forum %}
+{% endif %}
+
+{% endblock %}
+
+{% block aside %}
+
+{% comment %}
+<ul id="breadcrumbs" class="block">
+  <li id="index_link"><a href="{% url cicero_index %}">Начало</a>
+</ul>
+{% endcomment %}
+
+{% if user.is_authenticated %}
+
+<ul style="border: 0 solid #ccc; border-width: 2px 0 0 0; padding: 1px;">
+  <li><a href=".{% url cicero.views.mark_read %}">Прочитать форум</a></li>
+  <li><a href="{% url cicero.views.mark_read %}">Прочитать все</a></li>
+</ul>
+
+{% comment %}
+<div id="mark_read" class="block">
+  <form action="mark_read/" method="post">
+    <button type="submit">Прочитать форум</button>
+  </form>
+  <form action="../mark_read/" method="post">
+    <button type="submit">Прочитать все</button>
+  </form>
+</div>
+{% endcomment %}
+
+{% endif %}
+
+{% endblock %}

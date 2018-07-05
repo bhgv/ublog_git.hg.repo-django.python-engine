@@ -1,0 +1,66 @@
+{% extends "django_hg/base_repository.html" %}
+{% load i18n %}
+{% load django_hg_tags %}
+
+{% block title %}
+    {% blocktrans %}
+      Browse {{ repo }}@{{ rev }}
+    {% endblocktrans %}
+{% endblock %}
+
+{% block head_title %}
+    {% trans 'Repository' %} {{ repo }}
+{% endblock %}
+
+{% block content%}
+    {% path %}
+    <h3>
+        {% blocktrans count files|length as count %}
+            r{{ rev }}:{{ hash }} — One item
+        {% plural %}
+            r{{ rev }}:{{ hash }} — {{ count }} items
+        {% endblocktrans %}
+    </h3>
+    <table>
+    {% for f in files %}
+      <tr><td>
+            &nbsp;
+        {% if f.is_dir %}
+            <a href="{% url hg-repo-action-rev-path repo "browse" rev f.path %}">
+                {{ f }}
+            </a>
+            &nbsp;
+          </td><td>
+          </td><td>
+          </td><td>
+        {% else %}
+            {{ f }}
+            &nbsp;
+            </td><td>
+            &nbsp;
+            {{ f.mimetype }}
+            &nbsp;
+            </td><td>
+            &nbsp;
+            ({{ f.size|filesizeformat }})
+            &nbsp;
+          </td>
+          <td>
+            <div class="control" style="color: brown;">
+                &nbsp;
+                <a href="{% url hg-repo-action-rev-path repo "changesets" "tip" f.path %}" class="ctllink">
+                    {% trans "Log" %}
+                </a> 
+                <a href="{% url hg-repo-action-rev-path repo "browse" rev f.path %}" class="ctllink">
+                    {% trans "View" %}
+                </a> 
+                <a href="{% url hg-repo-action-rev-path repo "changesets" rev f.path %}" class="ctllink">
+                    {% trans "Diff" %}
+                </a>
+                &nbsp;        
+            </div>
+        {% endif %}
+      </td></tr>
+    {% endfor %}
+    </table>
+{% endblock %}

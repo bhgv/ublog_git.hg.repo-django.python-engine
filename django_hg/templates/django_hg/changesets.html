@@ -1,0 +1,73 @@
+{% extends "django_hg/base_repository.html" %}
+{% load i18n %}
+{% load django_hg_tags %}
+
+
+{% block title %}
+    {% blocktrans %}
+      Changesets
+    {% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+    <div id="path">{% trans 'History' %}</div>
+    <h2>
+        {% ifequal max 0 %}
+            {% blocktrans  %}
+                No revision
+            {% endblocktrans %}
+        {% else %}
+            {% ifequal max 1 %}
+                {% blocktrans  %}
+                    One revision
+                {% endblocktrans %}
+            {% else %}
+                {% blocktrans  %}
+                    Revisions {{ start }}-{{ end }}/{{ max }} 
+                {% endblocktrans %}
+            {% endifequal %}
+        {% endifequal %}
+    </h2>
+    
+    {% regroup changelog by date as date_list %}
+    <ol>
+        {% for date in date_list %}
+        <li><h4>{{ date.grouper }}</h4>
+            <table>
+                {% for c in date.list %}
+                    <tr>
+                    <td>
+                        &nbsp;
+                        {{ c.time }}
+                        &nbsp;
+                    </td><td>
+                        &nbsp;
+                        {{ c.user|format_hg_user }} committed
+                        &nbsp;
+                    </td><td>
+                        &nbsp;
+                        <a href="{% url hg-repo-action-rev repo "changesets" c.rev %}">
+                            r{{c.rev }}:{{c.hash}}
+                        </a>
+                        &nbsp;
+                    </td><td>
+                        &nbsp;
+                        {% blocktrans with c.files_count as count and c.files_count|pluralize as plural %}
+                            ({{ count }} file{{ plural }})
+                        {% endblocktrans %}
+                        &nbsp;
+                    </td><td>
+                        &nbsp;
+                        {{ c.description|linebreaksbr }}
+                        &nbsp;
+                    </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    </ol>
+    
+    <ul>
+        {% paginate %}
+    </ul>
+{% endblock %}

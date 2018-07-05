@@ -1,0 +1,71 @@
+{% extends "django_hg/base_hg.html" %}
+{% load i18n %}
+{% load django_hg_tags %}
+
+{% block content_title %}
+    {% url hg-repo repo as repo_url %}
+    {% url hg-repo-action repo "browse" as repo_browse_url %}
+    {% url hg-repo-action repo "changesets" as repo_changesets_url %}
+
+    <div id="breadcrumb">
+        <a href="{% url hg-list %}">{%  trans 'Repositories' %}</a> > {{ repo }}
+    </div>
+    <h2>
+        {{ repo }}
+    </h2>
+    <div id="tools">
+    
+    
+    
+    <table class="controls" style="display: block; padding: 0.5em; width: 100%;">
+      <tr><td class="controls">
+
+        <span style="display: block; float: right;">
+          <form id="search_form" action="{% url hg-repo-action repo "changesets" %}" method="get">
+            <label for="q" style="float: left;">{% trans 'Search in history' %}&nbsp;</label>
+            <input type="text" name="q" value="{{ q }}" style="width: 30em; float: left;" />
+            <label style="float: left;">&nbsp;</label>
+            <button type="submit" style="float: left;">{% trans 'OK' %}</button>
+          </form>
+        </span>
+
+      </td></tr>
+    </table>
+
+    
+{% comment %}
+        <form action="{% url hg-repo-action repo "changesets" %}" method="get">
+            <ul>
+            </ul>
+        </form>
+{% endcomment %}
+        <p>{% trans 'Clone url' %}:</p>
+        <table style="width:100%;"><tr><td><center><b>{{ repo.absolute_url }}</b></center></td></tr></table>
+        
+        
+        <div class="control" style="color: brown;">
+            <a href="{{ repo_url }}" class="ctllink">{% trans 'Overview' %}</a> | 
+            <a href="{{ repo_browse_url }}" class="ctllink">{% trans 'Browse' %}</a> |
+            <a href="{{ repo_changesets_url }}" class="ctllink">{% trans 'History' %}</a>
+        </div>
+
+{% comment %}
+        <ul class="tabs">
+            <li class="{% active request repo_url %}">
+                <a href="{{ repo_url }}">{% trans 'Overview' %}</a>
+            </li>
+            <li class="{% active request repo_browse_url %}">
+                <a href="{{ repo_browse_url }}">{% trans 'Browse' %}</a>
+            </li>
+            <li class="{% active request repo_changesets_url %}">
+                <a href="{{ repo_changesets_url }}">{% trans 'History' %}</a>
+            </li>
+            <!--li>
+              <a href="{% url hg-repo repo %}" style="display: inline; float: left">{% trans 'Tickets' %}</a>|
+              <a href="{% url hg-repo repo %}" style="display: inline; float: right">{% trans 'New' %}</a>
+            </li>
+            <li><a href="{% url hg-repo repo %}">{% trans 'Wiki' %}</a></li-->
+        </ul>
+{% endcomment %}
+    </div>
+{% endblock %}

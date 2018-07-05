@@ -1,0 +1,26 @@
+{% extends "cicero/auth.html" %}
+
+{% load i18n %}
+{% load django_hg_tags %}
+{% load search %}
+
+{% block extra_head %}
+    {% comment %}
+    <link rel="stylesheet" href="{{ MEDIA_URL }}django_hg/css/django_hg.css" />
+    {% endcomment %}
+{% endblock %}
+
+{% block title %}
+    {% trans 'Repositories' %}
+{% endblock %}
+
+{% block cicero_content %}
+
+{% block content_title %}
+{% endblock %}
+
+
+{% block content %}
+{% endblock  %}
+
+{% endblock %}

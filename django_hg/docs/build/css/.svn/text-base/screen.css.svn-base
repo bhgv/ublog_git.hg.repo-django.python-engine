@@ -1,0 +1,490 @@
+/* Global reset, based on Eric Meyer
+  (http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/)*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
+blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font,
+img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd,
+ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead,
+tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+/* remember to define focus styles! */
+:focus {
+  outline: 0;
+}
+
+body {
+  color: #363636;
+  font-family: arial ;
+  font-size: 0.85em ;
+  line-height: 0.9em;
+  margin: 0px;
+  padding: 0px ;
+}
+
+em {
+  color: #9f1f21 ;
+}
+
+html {
+  background-color: rgb(238, 238, 238);
+}
+
+h1 {
+  font-size: 1.8em ;
+  font-weight: bold ;
+  line-height: 1.8em ;
+}
+
+  h1 a {
+    color: #FFFFFF ;
+    text-decoration: none ;
+  }
+
+h2 {
+  font-size: 1.5em ;
+  font-weight: bold ;
+  line-height: 1.5em ;
+  margin: 8px 0 2px 16px ;
+}
+
+h3 {
+  font-size: 1.2em ;
+  font-weight: bold ;
+  line-height: 1.2em ;
+  margin: 8px 0 2px 16px ;
+}
+
+h4 {
+  font-size: 1.1em ;
+  line-height: 1.1em ;
+  margin: 4px 0 2px 16px ;
+  font-style: italic ;
+}
+
+hr.clear {
+  clear:   both ;
+  visibility: hidden;
+  height:  0 ;
+  margin:  0 ;
+  padding: 0 ;
+  width:   0 ;
+}
+
+p {
+  line-height: 1.4em ;
+  margin: 4px 0 2px 16px ;
+}
+
+strong {
+  font-weight:  bold ;
+}
+
+table {
+
+}
+
+td, th {
+  padding: 2px ;
+}
+
+input[type="text"] {
+  width: 500px !important ;
+}
+
+textarea {
+  width: 500px !important ;
+  height: 150px ;
+}
+
+ul {
+  margin: 4px 0 2px 32px ;
+}
+
+  ul li  {
+    line-height: 1.2em ;
+    margin: 0px 0px 4px 16px ;
+  }
+
+ul.error_list {
+  color: red ;
+}
+
+#body-header {
+  background: #757878  ;
+  color: #FFFFFF ;
+  height: 100px ;
+}
+
+  #body-header.admin {
+    background: #757878  ;
+    color: #FFFFFF ;
+    height: 70px ;
+  }
+
+  #body-header h1 {
+    background: url('../images/logo.png') no-repeat ;
+    display: block;
+    height: 100px ;
+    text-indent: -9999px ;
+    width: 350px;
+    /*padding: 5px*/
+  }
+
+    #body-header.admin h1 {
+      background: transparent ;
+      color: #FFFFFF ;
+      height: 40px ;
+      text-decoration: none ;
+      text-indent: 0px ;
+      padding: 5px
+    }
+
+      #body-header.admin a h1 {
+        color: #FFFFFF ;
+        text-decoration: none ;
+      }
+
+  #body-header ul#body-header-common-menu {
+    float: right ;
+  }
+
+    #body-header ul#body-header-common-menu li {
+      display: inline-block ;
+      padding: 0 5px ;
+    }
+
+      #body-header ul#body-header-common-menu li a {
+        color: silver ;
+      }
+
+  #body-header ul#body-header-primary-menu, #body-header p {
+    background: silver ;
+    clear: both ;
+    display: block ;
+    height: 28px ;
+    margin: 0 ;
+    padding: 0 25px;
+  }
+
+  #body-header p {
+    padding: 6px 9px; ;
+  }
+
+    #body-header ul#body-header-primary-menu li {
+      display: inline-block ;
+      font-weight: bold ;
+    }
+
+    #body-header ul#body-header-primary-menu li a {
+      display: inline-block ;
+      padding: 6px 9px;
+    }
+
+    #body-header ul#body-header-primary-menu li a:link, #body-header ul li a:visited {
+      color: #757878 ;
+      text-decoration: none ;
+    }
+
+      #body-header ul#body-header-primary-menu li a:active,
+      #body-header ul#body-header-primary-menu li a:focus,
+      #body-header ul#body-header-primary-menu li a:hover {
+        background: #A1A5AA ;
+        color: #FFFFFF ;
+        text-decoration: none ;
+        border-bottom: 3px solid #EEEEEE;
+      }
+
+    #body-header ul#body-header-primary-menu li.active {
+      background: #e21f21 ;
+    }
+
+      #body-header ul#body-header-primary-menu li.active a {
+        color: #FFFFFF ;
+      }
+
+        #body-header ul#body-header-primary-menu li.active a:active,
+        #body-header ul#body-header-primary-menu li.active a:focus,
+        #body-header ul#body-header-primary-menu li.active a:hover {
+          background: #9f1f21;
+          border-bottom: 3px solid #FFFFFF;
+        }
+
+    #body-header ul#body-header-primary-menu ul.options {
+      margin: 0;
+      padding: 0 ;
+    }
+
+
+      #body-header ul#body-header-primary-menu ul.options li {
+        background: #A1A5AA ;
+        display: block ;
+        font-size: 1em ;
+        font-weight: normal;
+        margin: 0;
+        padding: 0 ;
+      }
+
+        #body-header ul#body-header-primary-menu ul.options li a {
+          display: block;
+          border-bottom: none !important;
+        }
+
+          #body-header ul.options li a:active,
+          #body-header ul.options li a:focus,
+          #body-header ul.options li a:hover {
+            background: #363636
+          }
+
+            #body-header ul.options li a:active,
+            #body-header ul.options li a:focus,
+            #body-header ul.options li a:hover {
+              background: #9f1f21
+            }
+
+    #body-header  ul li.active ul.options li {
+      background: #e21f21 ;
+    }
+
+    #body-header ul.none {
+      display: none ;
+    }
+
+#body-content {
+  clear: both ;
+  margin: 25px ;
+  min-width: 970px ;
+}
+
+
+#sf_admin_bar {
+  float: right ;
+  margin: 0 5px 0 0 ;
+}
+
+#sf_admin_container {
+  background: #FFFFFF ;
+  padding: 5px ;
+}
+
+  #sf_admin_container a {
+    color: #A1A5AA ;
+  }
+
+    #sf_admin_container a:active,
+    #sf_admin_container a:focus,
+    #sf_admin_container a:hover {
+      color: #757878 ;
+      text-decoration: none ;
+    }
+
+  #sf_admin_container h1 {
+    border-bottom: 1px solid silver ;
+    color: #757878 ;
+    font-size: 1.5em;
+    line-height: 1.5em;
+    margin: 0 0 5px 0 ;
+    padding: 0 0 2px 0;
+  }
+
+  #sf_admin_container th {
+    background: #757878;
+    color: #FFFFFF ;
+  }
+
+    #sf_admin_container th a {
+      color: #FFFFFF ;
+      padding: 0 ;
+    }
+
+      #sf_admin_container th a:active,
+      #sf_admin_container th a:focus,
+      #sf_admin_container th a:hover {
+        background: transparent ;
+        color: #FFFFFF ;
+        padding: 0 ;
+      }
+  #sf_admin_container tr {
+    background: none ;
+  }
+
+    #sf_admin_container tr:hover {
+      background: none ;
+    }
+
+  #sf_admin_container ul li
+  {
+
+  }
+
+.sf_admin_filter {
+  color:#FFFFFF;
+  width: 250px
+}
+
+  .sf_admin_filter table, .sf_admin_filter tr, .sf_admin_filter td {
+    background: #363636;
+  }
+
+  .sf_admin_filter table {
+    border: 3px solid #363636 ;
+  }
+
+    .sf_admin_filter select, .sf_admin_filter input[type="text"] {
+      max-width: 150px ;
+    }
+
+#sf_admin_list_batch_actions {
+  width: 20px ;
+}
+
+#sf_admin_list_th_actions{
+  min-width: 150px ;
+}
+
+label {
+  vertical-align: top ;
+}
+
+label[for="expert_photo_delete"] {
+  /*float: right !important ;*/
+  width: 100% !important ;
+}
+
+.add {
+  background: url('/sf/sf_admin/images/add.png') no-repeat ;
+  border: none ;
+  height: 0px ;
+  padding: 16px ;
+  text-indent: -999px ;
+  width: 0px ;
+}
+
+.block {
+  display: block
+}
+
+.category {
+  color: #e21f21 ;
+  font-size: 0.8em;
+
+}
+
+.picture_block {
+  padding: 5px 0 5px 130px ;
+}
+
+.delete {
+  background: url('/sf/sf_admin/images/delete.png') no-repeat ;
+  border: none ;
+  height: 0px ;
+  padding: 16px ;
+  text-indent: -999px ;
+  width: 0px ;
+}
+
+.right {
+  display:     inline-block ;
+  text-align: right ;
+}
+
+.help {
+  padding: 5px ;
+}
+
+.none {
+  display: none ;
+}
+
+.sf_admin_list {
+  margin-right: 270px ;
+}
+
+  .sf_admin_list table {
+    width: 100% ;
+  }
+
+  .sf_admin_list_th_event {
+    min-width: 150px;
+  }
+
+  .sf_admin_list_th_title {
+    min-width: 150px;
+  }
+
+  .sf_admin_list_th_author {
+    min-width: 120px;
+  }
+
+  .sf_admin_list_th_start_date {
+    min-width: 120px;
+  }
+
+.sf_admin_form_row div ul {
+  margin-left: 120px ;
+}
+
+  .sf_admin_form_row div ul li {
+    list-style-type: none ;
+  }
+
+  .sf_admin_form_row div ul li label {
+    display: block !important ;
+    padding: 0 0 8px 14px;
+    text-indent: 0 !important;
+  }
+
+#sf_admin_container .radio_list, #sf_admin_container .checkbox_list {
+  margin: 0;
+  padding: 10px;
+}
+
+  #sf_admin_container .radio_list li, #sf_admin_container .checkbox_list li{
+    float: left ;
+  }
+
+    #sf_admin_container .radio_list li input,
+    #sf_admin_container .checkbox_list li input {
+      float: left !important ;
+    }
+
+    #sf_admin_container .radio_list li label,
+    #sf_admin_container .checkbox_list li label {
+      float: left !important ;
+      padding:0 0 0 5px;
+    }
+
+
+
+.strong {
+  color: #e21f21 ;
+  font-weight: bold ;
+}
+
+.toc {
+  display: none;
+}
+
+.tooltip {
+  color: #666666 ;
+  font-size: 0.8em;
+}
+
+
+/* hide the request password for CSS3 compatible browsers */
+form a[href$="request_password"] {
+  display: none ;
+}
+
+/* Tiny MCE */
+table.mceLayout a {
+  background: none !important ;
+  padding: 0 0 0 0 !important ;
+}

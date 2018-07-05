@@ -1,0 +1,97 @@
+{% extends "django_hg/base_repository.html" %}
+{% load i18n %}
+{% load django_hg_tags %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{{ MEDIA_URL }}pygments/{{DJANGO_HG_PYGMENT_STYLE}}.css" />
+{% endblock %}
+
+{% block title %}
+    {% blocktrans with file|strip_path as file %}
+        View of {{ file }} at rev {{ rev }}
+    {% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="css/pygments/{{DJANGO_HG_PYGMENT_STYLE}}.css" />
+    {% path %}
+    <h2>
+        {% blocktrans with file|strip_path as file %}
+            View of “{{ file }}” at rev {{ rev }}
+        {% endblocktrans %}
+    </h2>
+    <p />
+
+        <table align="center" style="width:30em; text-align:center;">
+        <tr>
+          <th>
+            {% trans 'Mimetype' %}
+          </th>
+          <th>
+            <b>{% trans 'Size' %}</b>
+          </th>
+        </tr>
+        <tr>
+          <td>
+            {{ mimetype.0 }}
+          </td>
+          <td>
+            {{ size|filesizeformat }}
+          </td>
+        </tr>
+        </table>
+        
+        {% comment %}
+        <ul>
+            <li><strong>{% trans 'Mimetype' %}</strong>: {{ mimetype.0 }}</li>
+            <li><strong>{% trans 'Size' %}</strong>: {{ size|filesizeformat }}</li>
+            <li>
+                <a href="{% url hg-repo-action-rev-path repo "browse" rev file %}?download" class="download">
+                    {% trans 'Download' %}
+                </a>
+            </li>
+            <li>
+                <a href="{% url hg-repo-action-rev-path repo "browse" rev file %}?raw" class="raw">
+                    {% trans 'View as plain/text' %}
+                </a>
+            </li>
+            <li>
+                <div class="filelinks">
+                    <a href="{% url hg-repo-action-rev-path repo "changesets" "tip" file %}" class="log">
+                        {% trans "Log" %}
+                    </a>
+                    <a href="{% url hg-repo-action-rev-path repo "browse" rev file %}" class="view">
+                        {% trans "View" %}
+                    </a>
+                    <a href="{% url hg-repo-action-rev-path repo "changesets" rev file %}" class="ctllink">
+                        {% trans "Diff" %}
+                    </a>
+                </div>
+            </li>
+            <li>
+            </li>
+        </ul>
+        {% endcomment %}
+        
+                <div class="control" style="color: brown;">
+                  <center>
+                    <a href="{% url hg-repo-action-rev-path repo "browse" rev file %}?download" class="ctllink">
+                        {% trans 'Download' %}
+                    </a> | 
+                    <a href="{% url hg-repo-action-rev-path repo "browse" rev file %}?raw" class="ctllink">
+                        {% trans 'View as plain/text' %}
+                    </a> | 
+                    <a href="{% url hg-repo-action-rev-path repo "changesets" "tip" file %}" class="ctllink">
+                        {% trans "Log" %}
+                    </a> 
+                    <a href="{% url hg-repo-action-rev-path repo "browse" rev file %}" class="ctllink">
+                        {% trans "View" %}
+                    </a> 
+                    <a href="{% url hg-repo-action-rev-path repo "changesets" rev file %}" class="ctllink">
+                        {% trans "Diff" %}
+                    </a>
+                  </center>
+                </div>
+
+    {% filedisplay %}
+{% endblock %}

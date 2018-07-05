@@ -1,0 +1,816 @@
+
+
+  /* Layout */
+  body {
+    margin: 0;
+  }
+  
+  h1 {
+    margin: 0; padding: 0.5em;
+  }
+  
+  em.error {
+    display: block; margin-top: 0; margin-bottom: 0.5em;
+  }
+  
+/*
+  table {
+    border-collapse: collapse;
+  }
+*/
+  
+/*
+  td,
+  th {
+    text-align: left;
+    padding: 0.2em;
+    vertical-align: top;
+  }
+*/
+
+  #content {
+    position: relative;
+    padding: 0 1em;
+    width: 95%;
+  }
+  
+  #aside {
+    position: absolute;
+    left: 53em; top: 6.5em; width: 14em;
+  }
+  
+  #index #aside {
+    top: 4em;
+  }
+  
+  #aside .block {
+    margin: 0 0 1em 0; padding: 0.5em;
+  }
+  
+  #aside ul {
+    list-style: none;
+  }
+  
+/*
+  h2 {
+    margin: 0; padding: 1em 0;
+  }
+*/
+  
+  .paginator {
+    float: right;
+    overflow: hidden; zoom: 1;
+    width: 10em; text-align: center;
+    padding: 0.5em;
+  }
+  
+  .paginator .next {
+    float: right;
+  }
+  
+  .paginator .previous {
+    float: left;
+  }
+  
+  .paginator input {
+    width: 2.5em; text-align: right;
+  }
+  
+  .usertext p {
+    margin-top: 0;
+  }
+  
+  .buttons {
+    text-align: right;
+  }
+  
+  .group,
+  #edit_profile #content .block,
+  #reference {
+    margin: 1em 0;
+  }
+  
+  .group h2,
+  #edit_profile #content .block h3,
+  #reference  {
+    padding: 0.5em;
+  }
+  
+  #index #content ul {
+    margin: 1em; padding: 0;
+    list-style: none;
+  }
+  
+  #index #content li {
+    margin: 0.5em 0; padding: 0;
+  }
+  
+  #forum ol,
+  #topic ol {
+    clear: both;
+    list-style: none;
+    padding: 0;
+    width: 95%;
+  }
+  
+  #topic ol li {
+    margin: 0;
+    padding: 0.5em 0;
+  }
+  
+  #topic .meta {
+    text-align: right;
+  }
+  
+  #topic .meta address,
+  #topic .meta .time {
+    display: inline; padding-left: 1em;
+  }
+  
+  #topic .control {
+    text-align: right;
+  }
+  
+  #add,
+  #edit {
+    clear: both; width: 50em;
+  }
+  
+  #add label,
+  #edit label {
+    display: block;
+  }
+  
+  #add input,
+  #add textarea,
+  #edit input,
+  #edit textarea,
+  #spawn input {
+    width: 100%;
+  }
+  
+  #auth {
+    position: absolute;
+    top: 0; right: 0;
+    padding: 0.5em;
+  }
+  
+  #auth p,
+  #auth div {
+    display: inline;
+    padding-left: 1em;
+  }
+  
+  #auth input {
+    width: 20em;
+  }
+  
+  #profile #content,
+  #edit_profile #content {
+    width: 95%;
+  }
+  
+  #profile table {
+    width: 100%;
+  }
+  
+  #profile th {
+    width: 1%;
+  }
+  
+  #profile table ul {
+    margin: 0; padding: 0;
+  }
+  
+  #profile table li {
+    margin: 0 0 0 1em; padding: 0;
+  }
+  
+  #profile #mutant {
+    float: left; 
+    margin: 0 1em 1em 0;
+  }
+  
+  #profile #openid #description {
+    overflow: hidden;
+  }
+  
+  #profile #openid #description p {
+    margin-top: 0;
+  }
+  
+  #edit_profile #content .block {
+    overflow: hidden;
+  }
+  
+  #edit_profile #content .block p,
+  #edit_profile #content .block .buttons {
+    padding: 0.5em 1em;
+  }
+  
+  #edit_profile label {
+    float: left; width: 5em;
+  }
+  
+  #edit_profile #content .block input,
+  #edit_profile #content .block select {
+    width: 20em;
+  }
+  
+  #edit_profile #mutant {
+    float: right; margin: 0 1em 0 0;
+  }
+  
+  #edit_profile #openid .buttons {
+    clear: both;
+  }
+  
+  #edit_profile #personal .buttons {
+    float: right; width: 7em;
+  }
+  
+  #edit_profile #hcard {
+    float: right; width: 12em;
+  }
+  
+  #mark_read form {
+    margin: 0.5em 0;
+  }
+  
+  #mark_read button {
+    width: 100%;
+  }
+  
+  #search_form {
+    margin: 0 0 1em 0;
+    overflow: hidden;
+  }
+  
+  #search_form p {
+    float: left;
+    width: 85%;
+    margin-top: 0; margin-bottom: 0;
+  }
+  
+  #search_form p input {
+    width: 100%;
+  }
+  
+  #search_form .buttons {
+    float: right;
+    width: 14%;
+    text-align: right;
+  }
+    
+  /* Colors */
+  
+/*
+  h1,
+  h1 a,
+  #auth p,
+  #auth a,
+  th {
+    color: white;
+  }
+*/
+
+/*
+  a {
+    color: #444;
+  }
+*/
+  
+/*
+  h1,
+  #auth,
+  th {
+    background: white;
+  }
+*/
+
+/*
+  h2,
+  h3,
+  .meta,
+  .meta a,
+  .control,
+  .control a,
+  .spawned {
+    color: #888;
+  }
+*/
+
+  .group,
+  #topic ol li,
+  #edit_profile #content .block,
+  #aside .block,
+  #reference {
+    border-color: olive;
+/*
+    #CCC;
+*/
+  }
+  
+/*
+  td,
+  th {
+    border-color: black;
+  }
+*/
+  
+  .error {
+    color: red;
+  }
+  
+  #aside .block {
+    background: #F0F0F0;
+  }
+  
+  /* Fonts */
+  
+/*
+*/
+  body {
+    font: small Tahoma, sans-serif;
+  }
+
+/*
+  h1,
+*/
+  #profile #openid_link {
+    font-size: 80%; 
+  }
+ 
+/*
+  h2 {
+    font-size: 110%;
+  }
+*/
+
+  .meta,
+  .control,
+  .paginator,
+  #auth {
+    font-size: 85%;
+  }
+  
+  .paginator input,
+  #auth input {
+    font-size: 100%;
+  }
+  
+  .new {
+    font-weight: bold;
+  }
+  
+  /* Misc */
+  
+/*
+  a img {
+    border: none;
+  }
+
+  td,
+  th {
+    border-style: solid; border-width: 1px;
+  }
+*/
+
+  .group,
+  #edit_profile #content .block,
+  #aside .block,
+  #reference  {
+    border-style: solid; border-width: 1px;
+  }
+  
+  #topic ol li {
+    border-style: dotted; border-width: 1px 0 0 0;
+  }
+  
+  
+  
+  
+/*
+
+  A {
+    border-style: dotted; 
+    border-width: 0 0 1px 0;
+  }
+*/
+  
+  #breadcrumbs {
+    font-size: 90%; 
+    margin: 1em;
+    padding: 3em 0 .5em 3em;
+    
+    border-color: olive; 
+    border-style: dotted; 
+    border-width: 0 0 1px 0; 
+ /*
+ */
+  }
+  
+  
+  form input {
+    border-color: olive;
+    background: #FFE;
+    border-style: dotted; 
+    border-width: 1px;
+  }
+  
+  form textarea {
+    border-color: olive;
+    background: #FFE;
+    border-style: dotted; 
+    border-width: 1px;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+/*
+.superHeader {
+  color: white;
+  background-color: rgb(100,135,220);
+  height: 1.6em;
+}
+*/
+
+.superHeader {
+  color: brown;
+  background-color: #FFD;
+  height: 1.6em;
+  border-color: olive; border-style: solid; border-width: 1px;
+}
+
+.superHeader img { vertical-align: bottom; }
+
+/*
+.superHeader a {
+  color: white;
+  background-color: transparent;
+  font-size: 91%;
+  margin: 0;
+  padding: 0 0.5ex 0 0.25ex;
+}
+*/
+
+.superHeader a {
+  color: brown;
+  background-color: transparent;
+  font-size: 91%;
+  padding: 0.3em 0.5ex 0.3em 0.25ex;
+}
+
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.superHeader div {
+  position: absolute;
+  top: 0.40ex;
+}
+
+.superHeader .left { left: 0.4em; }
+.superHeader .right { right: 0.4em; }
+
+
+.midHeader {
+  color: rgb(39,78,144);
+  background-color: rgb(140,170,230);
+  background-color: #ff6d06;
+  border: solid 0 black;
+  border-width: 2px 0;
+}
+
+.headerTitle {
+  color: black;
+  font-size: 233%;
+  font-weight: normal;
+  margin: 0 0 0 4mm;
+  padding: 0.25ex 0;
+}
+#headerSubTitle {
+  font-size: 50%;
+  font-style: italic;
+  margin-left: 1em;
+}
+
+.headerTitle a { color: black; }
+.headerTitle a:hover { text-decoration: none; }
+
+.subHeader {
+  display: none;
+  color: white;
+  background-color: rgb(0,51,153);
+  margin: 0;
+  padding: 1ex 1ex 1ex 1.5mm;
+}
+
+.subHeader a {
+  color: white;
+  background-color: transparent;
+  font-weight: bold;
+  margin: 0;
+  padding: 0 0.75ex 0 0.5ex;
+}  
+
+
+.superHeader .highlight, .subHeader .highlight {
+  color: rgb(253,160,91);
+  background-color: transparent;
+}
+
+
+
+
+
+
+#side-bar {
+  width: 16em;
+  float: left;
+  clear: left;
+  border-right: 1px solid #ddd;
+}
+
+#side-bar div {
+  border-bottom: 1px solid #ddd;
+}
+
+.sideBarTitle {
+  font-weight: bold;
+  margin: 0 0 0.5em 2mm;
+  padding: 1em 0 0 0;
+}
+
+#side-bar ul {
+  list-style-type: none;
+  list-style-position: outside;
+  margin: 0;
+  padding: 0 0 0.3em 0;
+}
+
+li ul {
+  padding-left: 0.6em !important;
+}
+
+#side-bar li {
+  margin: 0;
+  padding: 0.1ex 0;  /* Circumvents a rendering bug (?) in MSIE 6.0  XXX should move to iehacks.css, this causes an ugly gap */
+}
+
+#side-bar a {
+  color: rgb(0,102,204);
+  background-color: transparent;
+  margin: 0;
+  padding: 0.25em 1ex 0.25em 2mm;
+  display: block;
+  text-transform: capitalize;
+  font-weight: bold!important;
+  font-size: 102%;
+  border-left: white solid 0.2em;
+}
+
+.thisPage, .thisPage a {
+  color: black!important;
+  background-color: white;
+  padding-left: 5mm;
+}
+
+#side-bar a:hover {
+  color: white;
+  background-color: rgb(100,135,220);
+  border-left: black solid 0.2em;
+  text-decoration: none;
+}
+
+.sideBarText {
+  line-height: 1.5em;
+  margin: 0 0 1em 0;
+  padding: 0 1.5ex 0 2.5mm;
+  display: block;
+}
+
+#side-bar .sideBarText a {
+  margin: 0;
+  padding: 0;
+  display: inline;
+}
+
+#side-bar .sideBarText a:hover {
+  color: rgb(0,102,204);
+  background-color: transparent;
+  text-decoration: none;
+}
+
+
+
+
+
+/* # Main Copy # */
+#main-copy {
+  max-width: 70em;
+  color: black;
+  background-color: transparent;
+  text-align: justify;
+  line-height: 1.5em;
+  margin: 0em 0 0 16em;
+  padding: 0.5mm 5mm 5mm 5mm;
+  border-left: 1px solid #ddd;
+}
+
+#bodyText {
+  margin: 0 0 0 15.5em;
+  padding: 2mm 5mm 2mm 5mm;
+}
+
+#main-copy p {
+  margin: 1em 1ex 1em 1ex !important; /* Need !important so troff-generated pages don't look totally squezed */
+  padding: 0;
+}
+
+#main-copy a {
+  color: rgb(0,102,204);
+  background-color: transparent;
+}
+
+#main-copy a:hover {
+  color:  rgb(100,135,220);
+}
+
+#main-copy h1, #main-copy h2 {
+  color: rgb(0,102,204);
+  background-color: transparent;
+  font-size: 145.5%;
+  font-weight: bold;
+  margin: 2em 0 0 0;
+  padding: 0.5ex 0 0.5ex 0.6ex;
+  border-bottom: 2px solid rgb(0,102,204);
+}
+
+#main-copy h2 {
+  font-size: 115.5%;
+  border-bottom: 1px solid rgb(0,102,204);
+}
+
+#main-copy .topOfPage {
+  color: rgb(0,102,204);
+  background-color: transparent;
+  font-size: 91%;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 3ex 1ex 0 0;
+  padding: 0;
+  float: right;
+}
+
+dl {
+  margin: 1em 1ex 2em 1ex;
+  padding: 0;
+}
+
+dt {
+  font-weight: bold;
+  margin: 0 0 0 0;
+  padding: 0;
+}
+
+dd {
+  margin: 0 0 2em 2em;
+  padding: 0;
+}
+
+
+#main-copy .topics a {
+  color: rgb(0,102,204);
+  background-color: transparent;
+  margin: 0;
+  padding: 0.25em 1ex 0.25em 2mm;
+  display: block;
+  text-transform: capitalize;
+  font-weight: bold!important;
+  font-size: 102%;
+  border-left: white solid 0.2em;
+}
+
+#main-copy .topics a:hover {
+  color: white;
+  background-color: rgb(100,135,220);
+  border-left: black solid 0.2em;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+/* # Footer # */
+#footer {
+  color: white;
+  background-color: rgb(100,135,220);
+  padding: 1em;
+  clear: both;
+}
+
+#footer .left {
+  text-align: left;
+  line-height: 1.55em;
+  float: left;
+  clear: left;
+}
+
+#footer .right {
+  text-align: right;
+  line-height: 1.45em;
+}
+
+#footer a {
+  color: white;
+  background-color: transparent;
+}
+
+
+
+
+
+/* GENERAL */
+
+table {
+  border: solid 1px #aaa;
+}
+th {
+  background-color: #ddd;
+//  border: solid 1px black;
+  border: solid 0 #000;
+  text-align: center;
+}
+td {
+  background-color: #f8f8f8;
+//  border: solid 1px black;
+  border: solid 0 #000;
+}
+
+hr {
+  border-width: 0px 0px 0.1em 0px;
+//  border-color: black;
+}
+
+acronym, .titleTip {
+  border-bottom: 1px solid #ddd;
+  cursor: help;
+  margin: 0;
+  padding: 0 0 0.4px 0;
+}
+
+pre {
+  margin-left: 2em; 
+  font-size: 1.2em;
+}
+
+blockquote {
+  border-left: 1px solid blue;
+  font-style: italic;
+}
+
+.smallCaps {
+  font-size: 110%;
+  font-variant: small-caps;
+}
+
+.doNotDisplay { display: none; }
+
+
+.notify_errors,
+.notify_notes,
+.notify_success { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }
+ 
+.notify_errors { background: #FBE3E4; color: #8a1f11; border-color: #FBC2C4; }
+.notify_notes { background: #FFF6BF; color: #514721; border-color: #FFD324; }
+.notify_success { background: #E6EFC2; color: #264409; border-color: #C6D880; }
+.notify_errors a { color: #8a1f11; }
+.notify_notes a { color: #514721; }
+.notify_success a { color: #264409; }
+
+
+/* # Page/Handler specific # */
+h1.dir-list-head, ul.dir-list {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+ul.sitemap-list a {
+  text-transform: capitalize;
+}
+
+
+
+

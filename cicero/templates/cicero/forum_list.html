@@ -1,0 +1,51 @@
+{% extends "cicero/auth.html" %}
+{% load cicero %}
+
+{% block cicero_title %}Форумы Cicero{% endblock %}
+
+{% block content %}
+
+{% setnews object_list %}
+
+{% regroup object_list by group as groups %}
+
+{% for group in groups %}
+
+{% if group.grouper %}
+<div class="group">
+<h2>{{ group.grouper }}</h2>
+{% endif %}
+<ul>
+{% for forum in group.list %}
+    <li {% if forum.new %}class="new"{% endif %}><a href="{% url cicero.views.forum forum.slug %}">{{ forum }}</a> (<a href="{% url cicero_feeds url="articles" %}{{ forum.slug }}/">feed</a>)
+  {% if forum.is_forum %}
+  {% endif %}
+{% endfor %}
+</ul>
+{% if group.grouper %}
+</div>
+{% endif %}
+
+{% endfor %}
+
+{% endblock %}
+
+{% block aside %}
+
+{% if user.is_authenticated %}
+
+<ul style="border: 0 solid #ccc; border-width: 2px 0 0 0; padding: 1px;">
+  <li><a href="{% url cicero.views.mark_read %}">Прочитать все</a></li>
+</ul>
+
+{% comment %}
+<div id="mark_read" class="block">
+  <form action="mark_read/" method="post">
+    <button type="submit">Прочитать все</button>
+  </form>
+</div>
+{% endcomment %}
+
+{% endif %}
+
+{% endblock %}

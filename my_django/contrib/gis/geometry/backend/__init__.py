@@ -1,0 +1,21 @@
+from my_django.conf import settings
+from my_django.core.exceptions import ImproperlyConfigured
+from my_django.utils.importlib import import_module
+
+geom_backend = getattr(settings, 'GEOMETRY_BACKEND', 'geos')
+
+try:
+    module = import_module('.%s' % geom_backend, 'my_django.contrib.gis.geometry.backend')
+except ImportError, e:
+    try:
+        module = import_module(geom_backend)
+    except ImportError, e_user:
+        raise ImproperlyConfigured('Could not import user-defined GEOMETRY_BACKEND '
+                                   '"%s".' % geom_backend)
+
+try:
+    Geometry = module.Geometry
+    GeometryException = module.GeometryException
+except AttributeError:
+    raise ImproperlyConfigured('Cannot import Geometry from the "%s" '
+                               'geometry backend.' % geom_backend)

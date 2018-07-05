@@ -1,0 +1,62 @@
+{% extends 'klaus/skeleton.html' %} 
+
+{% load url from future %}
+
+{% load static %} 
+
+{% block title %}
+Repository list
+{% endblock %} 
+
+{% block content %}
+
+<link rel="stylesheet" href="/css/klaus/klaus.css" type="text/css" charset="utf-8">
+
+<a href="{% url 'klaus:git-list' %}">
+    {{ KLAUS_SITE_NAME }}
+</a>
+<span>»</span>
+
+<span style='float:right'>
+    <form method="post" action="/git/add_repo/">
+	<input type="text" id="repo_url" name="repo_url"> 
+	<button type="submit" id="submit-repo">Add a Repo</button>
+    </form>
+</span>
+
+<h2>
+    Repositories
+    <span>
+    (<a href="?by-last-update=yep">order by last update</a>)
+  </span>
+</h2>
+<ol class=repolist>
+    {% for repo in repos %} {% with last_updated_at=repo.get_last_updated_at description=repo.get_description %}
+    <li class="topics">
+        <a {% if last_updated_at %} href="{% url 'klaus:history' repo=repo.name %}" {% endif %}>
+            <div class=name>{{ repo.name }}</div>
+            {% if description %}
+            <div class=description>{{ description }}</div>
+            {% endif %}
+            <div class=last-updated>
+                {% if last_updated_at %} last updated {{ last_updated_at|timesince}} {% else %} no commits yet {% endif %}
+            </div>
+        </a>
+    </li>
+    {% endwith %} {% endfor %}
+</ol>
+
+    <script>
+            function add_repo() {
+                var repo_url = document.getElementById("repo_url").value;
+		alert(repo_url);
+                console.log(repo_url);
+                $.post('/git/add_repo/', {
+                    'repo_url': repo_url,
+                }, function(data) {
+                    console.log(data)
+                })
+            }
+    </script>
+
+{% endblock %}

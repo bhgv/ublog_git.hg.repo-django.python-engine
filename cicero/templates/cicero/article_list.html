@@ -1,0 +1,139 @@
+{% extends "cicero/auth.html" %}
+{% load cicero %}
+
+{% block cicero_title %}{{ topic }}{% endblock %}
+
+{% block cicero_extrahead %}<link rel="alternate" type="application/atom+xml" href="{% url cicero_feeds url="articles" %}{{ topic.forum.slug }}/{{ topic.id }}/">{% endblock %}
+
+{% block content %}
+
+
+
+<div id="subject">
+  <span id="breadcrumbs" class="block">
+    <span id="index_link"><a href="{% url cicero_index %}">Начало</a></span>
+    &nbsp;&#x2192;&nbsp;
+    <span id="forum_link"><a href="{% url cicero.views.forum topic.forum.slug %}">{{ topic.forum }}</a></span>
+    &nbsp;&#x2192;&nbsp;
+    <span id="forum_link" style="display: inline; font-size: 130%; color: gray;">{{ topic.subject }}</span>
+    
+  {% if topic.spawned_from %}
+    {% with topic.spawned_from.topic as source %}
+    <span style="font-size: 85%">&nbsp; (Отщеплен от топика <a href="{% url cicero.views.topic source.forum.slug,source.id %}">{{ source.subject }}</a>)</span>
+    {% endwith %}
+  {% endif %}
+  
+  {% ifcanchangetopic profile topic %}
+  <span class="meta">
+    &nbsp; (<a href="{% url cicero.views.topic_edit topic.id %}">Редактировать</a>)
+  </span>
+  {% endifcanchangetopic %}
+  </span>
+  <!--
+  <h2>{{ topic.subject }}</h2>
+  -->
+  
+</div>
+
+<table class="controls" style="display: block; padding: 0.5em; width: 100%;">
+<tr><td class="controls">
+
+{% paginator %}
+
+</td></tr>
+<tr><td class="controls">
+
+<ol>
+{% for article in object_list %}
+  <li id="{{ article.id }}">
+    {% if not article.spawned %}
+    <div class="usertext">
+      {{ article.html }}
+    </div>
+    <div class="meta">
+      {% if not article.from_guest %}
+        {% if user.is_authenticated and is_can_change_carmas %}
+          <a href="{% url cicero.views.carma article.author.user.username "inc" %}" class="ctllink">&#x2191;</a>
+          <a href="{% url cicero.views.carma article.author.user "dec" %}" class="ctllink">&#x2193;</a>
+         |
+        {% endif %}
+          <address>
+            <a href="{{ article.author.get_absolute_url }}" title="{{ article.author.openid }}">{{ article.author.user }}</a>
+          </address>
+      {% else %}
+      <address>
+        {{ article.guest_name }}
+      </address>
+      {% endif %}
+      <address>
+      <p class="time">{{ article.created|date:"d.m.Y H:i" }}
+    </div>
+    <div class="control" style="color: brown;">
+      {% if profile.moderator or profile.user.is_superuser %}
+          <a href="{% url cicero.views.article_edit article.id %}">Редактировать</a>
+        | <a href="{% url cicero.views.article_delete article.id %}">Удалить</a>
+        | <a href="{% url cicero.views.article_spam article.id %}">Спам</a>
+    {% comment %}
+      <form action="{% url cicero.views.article_spam article.id %}" method="post"><button>Спам</button></form>
+    {% endcomment %}
+      {% if not article.from_guest %}
+    {% comment %}
+    <!--
+      {% with article.author.user.scipio_profile.spamer|yesno:"yes,no,unknown" as spamer %}
+      {% ifequal spamer "unknown" %}
+      <form action="{% url scipio_whitelist %}" method="post"><input type="hidden" name="id" value="{{ article.author_id }}"><button>Whitelist</button></form>
+      {% endifequal %}
+      {% endwith %}
+    -->
+    {% endcomment %}
+      {% endif %} 
+       | <a href="{% url cicero.views.topic_spawn article.id %}">Отщепить топик</a>
+       | <a href="{% url cicero.views.topic_to_article article.id %}">Оформить в статью</a>
+      {% else %}
+        {% ifcanchangearticle profile article %}
+        <a href="{% url cicero.views.article_edit article.id %}">Редактировать</a>
+        | <a href="{% url cicero.views.article_delete article.id %}">Удалить</a>
+      {% comment %}
+        <form action="{% url cicero.views.article_delete article.id %}" method="post">
+        <button>Удалить</button>
+        </form>
+      {% endcomment %}
+        {% endifcanchangearticle %}
+      {% endif %}
+    </div>
+    {% else %}
+    <div class="spawned">
+    Отщеплен новый топик "<a href="{% url cicero.views.topic article.spawned_to.forum.slug,article.spawned_to.id %}">{{ article.spawned_to.subject }}</a>".
+    </div>
+    {% endif %}
+{% endfor %}
+</ol>
+
+</td></tr>
+<tr><td class="controls">
+
+{% paginator %}
+
+</td></tr>
+</table>
+
+{% if topic.old %}
+<p>Внимание! Это довольно старый топик, посты в него не попадут в новые, и их
+никто не увидит. Пишите пост, если хотите просто дополнить топик, а чтобы задать
+новый вопрос -- <a href="{% url cicero.views.forum topic.forum.slug %}">начните новый</a>.
+{% endif %}
+
+{% if user.is_authenticated and is_user_can_add_topic_or_article and topic.forum.is_forum %}
+{% post_form form topic.forum topic %}
+{% endif %}
+
+{% endblock %}
+
+{% block aside %}
+<!--
+<ul id="breadcrumbs" class="block">
+  <li id="index_link"><a href="{% url cicero_index %}">Начало</a>
+  <li id="forum_link"><a href="{% url cicero.views.forum topic.forum.slug %}">{{ topic.forum }}</a>
+</ul>
+-->
+{% endblock %}

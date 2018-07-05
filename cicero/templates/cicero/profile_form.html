@@ -1,0 +1,60 @@
+{% extends "cicero/auth.html" %}
+{% load cicero %}
+
+{% block cicero_title %}Редактирование профиля {{ profile }}{% endblock %}
+
+{% block content %}
+<h2>Редактирование профиля <span class="name">{{ profile }}</span></h2>
+
+<form action="{% url cicero.views.change_openid %}" id="openid" method="post" class="block">
+  <h3>OpenID</h3>
+  {% if profile.mutant %}
+  <p id="mutant">
+    <img src="{{ profile.mutant.url }}" alt="">
+  {% endif %}
+  <p>
+    <label for="id_openid_identity">{{ openid.openid_identity.label }}</label>
+    {{ openid.openid_identity }}
+    {% if openid.openid_identity.errors %}<em class="error">{{ openid.openid_identity.errors|join:", " }}</em>{% endif %}
+
+  <div class="buttons"><button type="submit">Изменить</button></div>
+</form>
+
+{% comment %}
+<!--
+{% if profile.user.scipio_profile %}
+<form action="{% url cicero.views.post_profile "personal" %}" method="post" id="personal" class="block">
+  <h3>Личные данные</h3>
+  <p>
+    <label for="id_nickname">{{ personal.nickname.label }}</label>
+    {{ personal.nickname }}
+    {% if personal.nickname.errors %}<em class="error">{{ personal.nickname.errors|join:", " }}</em>{% endif %}
+  <p>
+    {{ personal.autoupdate }}
+    <label for="id_autoupdate">{{ personal.autoupdate.label }}</label>
+    {% if personal.autoupdate.errors %}<em class="error">{{ personal.autoupdate.errors|join:", " }}</em>{% endif %}
+
+  <div class="buttons"><button type="submit">Изменить</button></div>
+</form>
+{% endif %}
+-->
+{% endcomment %}
+
+<form action="{% url cicero.views.post_profile "settings" %}" id="settings" method="post" class="block">
+  <h3>Настройки</h3>
+  <p>
+    <label for="id_filter">{{ settings.filter.label }}</label>
+    {{ settings.filter }}
+    {% if settings.filter.errors %}<em class="error">{{ settings.filter.errors|join:", " }}</em>{% endif %}
+
+  <div class="buttons"><button type="submit">Изменить</button></div>
+</form>
+
+{% endblock %}
+
+{% block aside %}
+<ul id="nav" class="block">
+  <li><a href="../../">Начало</a>
+  <li><a href="{{ profile.get_absolute_url }}">Страница пользователя</a>
+</ul>
+{% endblock %}

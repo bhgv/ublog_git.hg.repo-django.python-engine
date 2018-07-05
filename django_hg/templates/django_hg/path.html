@@ -1,0 +1,10 @@
+
+<span id="breadcrumbs" class="block">
+    {% for item in path %}
+            {% if not forloop.last %}
+                <span id="forum_link"><a href="{{ item.url }}">{{ item.name }}</a>&nbsp;&#x2192;&nbsp;</span>
+            {% else %}
+                <span id="forum_link" style="display: inline; font-size: 130%; color: gray;">{{item.name}}</span>
+            {% endif %}
+    {% endfor %}
+</span>

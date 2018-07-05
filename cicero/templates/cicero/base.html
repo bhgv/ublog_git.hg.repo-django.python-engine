@@ -1,0 +1,289 @@
+{% load url from future %}
+
+<!DOCTYPE html>
+<head>
+  <title>{% block cicero_title %}{% endblock %}</title>
+
+  <meta charset="UTF-8"> 
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+
+	{% block cicero_extrahead %}{% endblock %}
+
+<!-- 
+  <style>
+  </style>
+-->
+
+<link rel="stylesheet" href="{% url 'cicero_index' %}css/default.css" type="text/css" charset="utf-8">
+
+
+<script type="text/javascript">
+<!-- // hide from W3C validator
+var f_id = null;
+function getMovie(id) {
+    var MS =  navigator.appName.indexOf("Microsoft")!=-1;
+    var d, o;
+    if(MS){
+        o = window[id];
+    }else{
+        d = document;
+        o = d.getElementById(id);
+    }
+    f_id = id;
+    return o;
+}
+function showLoginForm() {
+  if(f_id != null)
+    hideForm(f_id);
+    
+  var w, h;
+  var o = getMovie('auth_form');
+  
+  w = (screen.width - 300) / 2;
+  h = (screen.height - 130) / 2;
+
+  o.style.height = '130px';
+  o.style.width = '300px';
+//  o.style.position = 'absolute';
+  o.style.top  = h.toString() + "px";
+  o.style.left = w.toString() + "px";
+//  o.style.border = "solid 2 #700";
+//  o.style.background = "yellow"; 
+  o.style.opacity = "1"; 
+//  o.style.display = "block";
+}
+function showRegForm() {
+  if(f_id != null)
+    hideForm(f_id);
+    
+  var w, h;
+  var o = getMovie('reg_form');
+  
+  w = (screen.width - 300) / 2;
+  h = (screen.height - 180) / 2;
+
+  o.style.height = '180px';
+  o.style.width = '300px';
+//  o.style.position = 'absolute';
+  o.style.top  = h.toString() + "px";
+  o.style.left = w.toString() + "px";
+//  o.style.border = "solid 2 #700";
+//  o.style.background = "yellow"; 
+  o.style.opacity = "1"; 
+//  o.style.display = "block";
+}
+function hideForm(id) {
+  var o = getMovie(id);
+  
+  o.style.height = '0';
+  o.style.width = '0';
+//  o.style.position = 'absolute';
+//  o.style.top  = h.toString() + "px";
+//  o.style.left = w.toString() + "px";
+//  o.style.border = "solid 2 #700";
+//  o.style.background = "yellow"; 
+  o.style.opacity = "0"; 
+//  o.style.display = "block";
+  f_id = null;
+}
+// -->
+</script>
+
+{% if page_id %}
+  <body id="{{ page_id }}">
+{% else %}
+  <body id="topic">
+{% endif %}
+
+
+<div id="header"> 
+    <div class="superHeader"> 
+    <div class="left"> 
+	  | <a href="/">Главная</a>
+{% comment %}
+	  | <a href="#2">Пользователи</a> 
+	  | <a href="#3">Поиск</a>
+{% endcomment %}
+	  |
+    {% block footer_content %}{% endblock %}
+
+	  |
+
+    </div> 
+ 
+    <div class="right"> 
+ 
+      <span class="doNotDisplay">Related sites:</span> 
+      | <a href="http://cat-v.org">cat-v.org</a> 
+      | <a href="https://github.com/bhgv">github.bhgv</a> |
+{% comment %}
+      | <a href="http://basmp.narod.ru">basmp</a> |
+{% endcomment %}
+    </div> 
+ 
+
+    </div> 
+ 
+    <div class="midHeader"> 
+    <h1 class="headerTitle"><a href="{% url 'cicero_index' %}">Форум bhgv<span id="headerSubTitle">Django based engine</span></a></h1> 
+    </div> 
+    
+    <div class="subHeader"><br></div> 
+</div> 
+
+    <div id="side-bar"> 
+        <div> 
+
+
+<ul> 
+<li><a href="{% url 'cicero.views.articles_list' %}" class="thisPage"><b> Статьи/</b></a></li> 
+
+{% regroup groups.a|dictsort:"group" by group as grps %}
+
+{% comment %}
+{% regroup cicero.views.get_left_side_cont_a|dictsort:"group" by group as grps %}
+{% endcomment %}
+
+{% for group in grps %}
+
+<ul style="border: 0 solid #fff; border-width: 1px 0 0 0; padding: 1px;"> 
+
+{% if group.grouper %}
+<li><a>&raquo; <b>{{ group.grouper }}</b></a></li> 
+
+{% for bran in group.list %}
+  {% for forum in bran.cont %}
+    {% if not forum.is_forum %}
+      <li {% if forum.new %}class="new"{% endif %}><a href="{% url 'cicero.views.forum' forum.slug %}" style="font-size: 90%;">&nbsp;&rsaquo; {{ forum.name }}</a></li>
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+{% endif %}
+
+</ul> 
+
+{% endfor %}
+
+</ul> 
+
+<ul style="border: 0 solid #ccc; border-width: 2px 0 0 0; padding: 1px;"> 
+<li><a href="{% url 'cicero_index' %}" class="thisPage"><b> Форум/</b></a></li> 
+
+<ul> 
+<li><a>&raquo; <b>Новые сообщения</b></a></li> 
+</ul> 
+
+{% regroup groups.f|dictsort:"group" by group as grps %}
+
+{% for group in grps %}
+
+<ul style="border: 0 solid #fff; border-width: 1px 0 0 0; padding: 1px;"> 
+
+{% if group.grouper %}
+<li><a>&raquo; <b>{{ group.grouper }}</b></a></li> 
+
+{% for bran in group.list %}
+  {% for forum in bran.cont %}
+    {% if forum.is_forum %}
+      <li {% if forum.new %}class="new"{% endif %}><a href="{% url 'cicero.views.forum' forum.slug %}" style="font-size: 90%;">&nbsp;&rsaquo; {{ forum.name }}</a></li>
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+{% endif %}
+
+</ul> 
+
+{% endfor %}
+
+</ul>
+
+{% block moder_content %}{% endblock %}
+
+<ul style="border: 0 solid #ccc; border-width: 2px 0 0 0; padding: 1px;"> 
+<li><a href="{% url 'hg-list' %}" class="thisPage"><b> Hg/</b></a></li> 
+<li><a href="{% url 'klaus:git-list' %}" class="thisPage"><b> Git/</b></a></li> 
+</ul>
+
+{% comment %}
+{% endcomment %}
+
+
+        </div> 
+    </div> 
+
+
+
+<div id="main-copy" style="vertical-align: top;"> 
+
+
+{% block cicero_content %}{% endblock %}
+
+
+{% if debug %}
+<div id="debug">
+  <h2>Queries</h2>
+  <p>
+    {{ sql_queries|length }} Queries
+    {% ifnotequal sql_queries|length 0 %}
+    (<span style="cursor: pointer;" onclick="document.getElementById('debugQueryTable').style.display='';">Show</span>)
+    {% endifnotequal %}
+  </p>
+  <table id="debugQueryTable" style="display: none;">
+    <col width="1"></col>
+    <col></col>
+    <col width="1"></col>
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">SQL</th>
+      <th scope="col">Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for query in sql_queries %}<tr class="{% cycle odd,even %}">
+      <td>{{ forloop.counter }}</td>
+      <td>{{ query.sql }}</td>
+      <td>{{ query.time }}</td>
+    </tr>{% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+
+{% if summary %}
+<center>
+<table><tr>
+<td>
+осталось постов: {{ summary.posts }} |
+осталось редактирований: {{ summary.edits }} |
+осталось кармирований: {{ summary.carmas }} |
+ваша карма: {{ summary.user_carma }}
+</td>
+</tr></table>
+</center>
+{% endif %}
+
+</div> 
+
+
+<div id="footer"> 
+<br class="doNotDisplay doNotPrint" /> 
+ 
+<div class="left"><a href="http://bhgv.pythonanywhere.com/">Powered by agd</a></div> 
+ 
+<div class="right"> 
+<form action="http://www.google.com/cse" id="cse-search-box" style="display: inline"> 
+  <div style="display: inline"> 
+    <input type="hidden" name="cx" value="partner-pub-2060328396151526:ea9sar-xttn" /> 
+    <input type="hidden" name="ie" value="UTF-8" /> 
+    <input type="text" name="q" size="32" /> 
+    <button type="submit" name="sa">Search</button> 
+  </div> 
+</form> 
+<!--
+<script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&lang=en"></script>
+-->
+</div> 

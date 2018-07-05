@@ -1,0 +1,93 @@
+{% extends "django_hg/base_repository.html" %}
+{% load i18n %}
+{% load django_hg_tags %}
+
+{% block title %}
+    {% blocktrans with ctx.hash as hash %}
+      Changeset r{{ rev }}:{{ hash }}
+    {% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+    <h3>
+        {% blocktrans with ctx.hash as hash %}
+            Changeset r{{ rev }}:{{ hash }}
+        {% endblocktrans %}
+    </h3>
+    {% include 'django_hg/changeset_info.html' %}
+    <a name="file_list"></a>
+
+    <table>
+        {% for f in files %}
+            <tr>
+                <td>
+                    &nbsp;
+                    {% ifnotequal f.size -1 %}
+                        <a href="{% url hg-repo-action-rev-path repo "browse" rev f.name %}">{{ f.name }}</a>
+                    {% else %}
+                        {{ f.name }}
+                    {% endifnotequal %}
+                    &nbsp;
+                </td><td>
+                    &nbsp;
+                    {{ f.mimetype }}
+                    &nbsp;
+                </td><td>
+                    &nbsp;
+                    ({{ f.size|filesizeformat }})
+                    &nbsp;
+                </td><td>
+                    {% ifnotequal f.size -1 %}
+                        <div class="control" style="color: brown;">
+                            &nbsp;
+                            <a href="{% url hg-repo-action-rev-path repo "changesets" rev f.name %}" class="ctllink">
+                                {% trans "Log" %}
+                            </a>
+                            <a href="{% url hg-repo-action-rev-path repo "browse" rev f.name %}" class="ctllink">
+                                {% trans "View" %}
+                            </a>
+                            <a href="{% url hg-repo-action-rev-path repo "changesets" rev f.name %}" class="ctllink">
+                                {% trans "Diff" %}
+                            </a>
+                            &nbsp;
+                        </div>
+                    {% endifnotequal %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% comment %}
+    <ol class="list">
+    {% for f in files %}
+        {% ifnotequal f.size -1 %}
+            {% ifnotequal f.diff None %}
+                <li>
+                    <a name="{{ f.name|urlize }}">{{ f.name|urlize }}</a>
+                    <div>
+                        {{ f.name }}
+                        <span class="float_right">
+                            <a href="#file_list">{% trans 'Back to files list' %}</a>
+                        </span>
+                    </div>
+                    <div class="file_wrapper">
+                        <div class="diff">
+                            <table>
+                            {% for line in f.diff %}
+                                <tr class="{% hg_diff_class line %}">
+                                    <td> --- 
+                                    {{ line }}</td>
+                                </tr>
+                            {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </li>
+            {% endifnotequal %}
+        {% endifnotequal %}
+    {% endfor %}
+    </ol>
+{% endcomment %}
+    <p />
+    <a href="{{ referer }}" class="ctllink">{% trans 'Back to history' %}</a>
+{% endblock  %}

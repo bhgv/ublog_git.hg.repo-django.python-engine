@@ -1,0 +1,18 @@
+{% load url from future %}
+{% load klaus %}
+
+<div class="tree" >
+    <h2>Tree @<a href="{% url 'klaus:commit' repo=repo.name rev=csid %}">{{ rev }}</a></h2>
+    <ol>
+        {% for _, name, fullpath in root_tree.dirs %}
+        <li class="topics">
+            {% if fullpath %}
+            <a href="{% url 'klaus:history' repo=repo.name rev=rev path=fullpath %}" class=dir>{{ name }}</a> {% else %}
+            <a href="{% url 'klaus:history' repo=repo.name rev=rev %}" class=dir>{{ name }}</a> {% endif %}
+        </li>
+
+        {% endfor %} {% for _, name, fullpath in root_tree.files %}
+        <li class="topics"><a href="{% url 'klaus:blob' repo=repo.name rev=rev path=fullpath %}">{{ name }}</a></li>
+        {% endfor %}
+    </ol>
+</div>

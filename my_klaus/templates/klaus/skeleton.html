@@ -1,0 +1,64 @@
+{% extends "cicero/auth.html" %}
+
+{% load i18n %}
+
+{% load url from future %}
+
+{% load static %}
+<!doctype html>
+<html>
+
+<head>
+    <title>{% block title %}{% endblock %} - {{ KLAUS_SITE_NAME }}</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel=stylesheet href="{% static 'klaus/pygments.css' %}" ) }}>
+    <link rel=stylesheet href="{% static 'klaus/klaus.css' %}" ) }}>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{% static 'klaus/line-highlighter.js' %}"></script>
+</head>
+
+<body>
+    <header>
+        <a href="{% url 'klaus:git-list' %}">
+    {{ KLAUS_SITE_NAME }}
+  </a>
+
+{% comment %}
+        <span class=breadcrumbs>
+    {% block breadcrumbs %}{% endblock %}
+  </span> {% block extra_header %}{% endblock %}
+        <span style='float:right'>
+        <input id='repo_url'> <button id='submit-repo'>添加仓库</button>
+        </span>>
+{% endcomment %}
+    </header>
+
+
+    <div id=content>
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        powered by <a href="https://github.com/biern/django-klaus">django-klaus</a> {{ KLAUS_VERSION }}, a simple Git viewer
+    </footer>
+    <script>
+        $(function() {
+            $('#submit-repo').click(function() {
+                var repo_url = $('#repo_url').val()
+                console.log(repo_url)
+                $.post('/git/add_repo/', {
+                    'repo_url': repo_url,
+                }, function(data) {
+                    console.log(data)
+                })
+            })
+        });
+    </script>
+
+</body>
+
+</html>
