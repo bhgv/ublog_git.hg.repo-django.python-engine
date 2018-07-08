@@ -46,8 +46,27 @@ class RepoListView(KlausTemplateView):
             sort_key = lambda repo: repo.name
             reverse = False
 
-        context['repos'] = sorted(RepoManager.all_repos(), key=sort_key,
+        repos = sorted(RepoManager.all_repos(), key=sort_key,
                                   reverse=reverse)
+        repos2 = []
+        for repo in repos:
+            repo_obj = Repo.objects.get(url=repo)
+            try:
+                if repo_obj is not None:
+                    is_may_read = repo_obj.users_owner == '' and repo_obj.users_read == '' and repo_obj.users_write == ''
+                    if not is_may_read:
+                        uowners = repo_obj.users_owner.split('\n')
+                        ureaders = repo_obj.users_read.split('\n')
+                        uwriters = repo_obj.users_write.split('\n')
+                
+                        user = self.request.user.username
+                        is_may_read = user != '' and ((user in uowners) or (user in uwriters) or (user in ureaders))
+                    if is_may_read:
+                        repos2.append(repo)
+            except Exception:
+                repos2.append(repo)
+        
+        context['repos'] = repos2
         return context
 
 
