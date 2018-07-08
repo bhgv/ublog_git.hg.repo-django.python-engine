@@ -69,9 +69,8 @@ class BaseRepoView(KlausTemplateView):
     "required by templates"
 
     def get_context_data(self, **ctx):
+        is_may_read = False
         context = super(BaseRepoView, self).get_context_data(**ctx)
-
-        i = 2/0
         repo = RepoManager.get_repo(self.kwargs['repo'])
         #repo_url = repo.get_config()._values[(b'remote',b'origin')][b'url'].decode()
         conf_vals = repo.get_config()._values
@@ -84,7 +83,28 @@ class BaseRepoView(KlausTemplateView):
         if repo_url is not None:
             repo_obj = Repo.objects.get(url=repo_url)
         else:
-            repo_obj = None
+            repo_obj = Repo.objects.get(url=repo) #None
+        
+        try:
+            if repo_obj is not None:
+                is_may_read = repo_obj.users_owner == '' and repo_obj.users_read == '' and repo_obj.users_write == ''
+                if not is_may_read:
+                    uowners = repo_obj.users_owner.split('\n')
+                    ureaders = repo_obj.users_read.split('\n')
+                    uwriters = repo_obj.users_write.split('\n')
+                
+                    user = self.request.user.username
+                    is_may_read = user != '' and ((user in uowners) or (user in uwriters) or (user in ureaders))
+                if not is_may_read:
+                    context.update({
+                        'view': self.view_name,
+                        'is_may_read': is_may_read,
+                    })
+                    context['csid'] = context['commit'].id.decode()
+                    return context
+        except Exception:
+            pass
+        
         if rev is None:
             rev = repo.get_default_branch()
             if rev is None:
@@ -110,6 +130,7 @@ class BaseRepoView(KlausTemplateView):
             'path': path,
             'blob_or_tree': blob_or_tree,
             'subpaths': list(subpaths(path)) if path else None,
+            'is_may_read': is_may_read,
         })
         context['csid'] = context['commit'].id.decode()
         return context
@@ -153,7 +174,8 @@ class HistoryView(TreeViewMixin, BaseRepoView):
 
     def get_context_data(self, **ctx):
         context = super(HistoryView, self).get_context_data(**ctx)
-
+        if not context['is_may_read']:
+            return context
         page = context['page'] = int(self.request.GET.get('page', 0))
 
         if page:
@@ -206,6 +228,8 @@ class BlobView(BlobViewMixin, TreeViewMixin, BaseRepoView):
 
     def get_context_data(self, **ctx):
         context = super(BlobView, self).get_context_data(**ctx)
+        if not context['is_may_read']:
+            return context
 
         if not isinstance(context['blob_or_tree'], Blob):
             raise RepoException("Not a blob")
@@ -266,6 +290,8 @@ class CommitView(BaseRepoView):
 
     def get_context_data(self, **ctx):
         context = super(CommitView, self).get_context_data(**ctx)
+        if not context['is_may_read']:
+            return context
         commit = context['commit']
         repo = context['repo']
         summary, file_changes = repo.commit_diff(commit)

@@ -13,6 +13,8 @@ History of {% if path %}{{ path }} - {% endif %}
 
 {% block content %} 
 
+{% if is_may_read %}
+
 {% include "klaus/includes/header.inc.html" %}
 <div style="float:left; width:24%;">
 {% include "klaus/includes/tree.inc.html" %}
@@ -59,4 +61,5 @@ History of {% if path %}{{ path }} - {% endif %}
 
 </div>
 
+{% endif %}
 {% endblock %}

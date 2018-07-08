@@ -15,6 +15,8 @@ from my_dulwich.repo import Repo
 from my_klaus.utils import parent_directory, encode_for_git, decode_from_git
 from my_klaus.diff import render_diff
 
+from my_klaus import models
+
 
 class FancyRepo(Repo):
     """A wrapper around Dulwich's Repo that adds some helper methods."""
@@ -260,8 +262,15 @@ class RepoManager(object):
 
     @classmethod
     def add_repo(cls, path):
+        fpath = FancyRepo(path)
         try:
-            cls._repos.append(FancyRepo(path))
+            db = models.Repo.objects.get(url=fpath)
+        except Exception:
+            models.Repo.objects.create(name=fpath.name, url=fpath)
+
+        try:
+            db = models.Repo.objects.get(url=fpath)
+            cls._repos.append(fpath)
         except Exception:
             pass
     @classmethod

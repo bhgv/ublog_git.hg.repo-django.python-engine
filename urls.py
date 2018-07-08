@@ -21,6 +21,10 @@ urlpatterns = patterns('',
     #(r'^admin/(.*)', admin.site.root),
     (r'^admin/', include(admin.site.urls)),
 
+    (r'^(.*/)*cauth/login/$', 'cicero.views.login'),
+    (r'^(.*/)*cauth/logout/$', 'cicero.views.logout'),
+    (r'^(.*/)*cauth/newuser/$', 'cicero.views.newuser'),
+
     (r'^git/', include('my_klaus.urls', namespace='klaus')),
     (r'^hg/', include('django_hg.urls')),
 
@@ -30,10 +34,6 @@ urlpatterns = patterns('',
     (r'^files/(?P<path>.*)$',
 	'my_django.views.static.serve',
 	{'document_root': settings.MEDIA_ROOT}),
-
-    (r'^(.*/)*cauth/login/$', 'cicero.views.login'),
-    (r'^(.*/)*cauth/logout/$', 'cicero.views.logout'),
-    (r'^(.*/)*cauth/newuser/$', 'cicero.views.newuser'),
 
     (r'^', include('cicero.urls')),
 )

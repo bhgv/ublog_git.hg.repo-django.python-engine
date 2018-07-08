@@ -33,7 +33,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = PROJECT_ROOT + '/db/cicero.db'
+DATABASE_NAME = PROJECT_ROOT + '/db/db.db'
 DATABASE_USER = ''             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
@@ -42,7 +42,7 @@ DATABASE_PORT = ''             # Set to empty string for default. Not used with 
 DATABASES = {
     'default': {
         'ENGINE': 'my_django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': PROJECT_ROOT + '/db/cicero.db',
+        'NAME': PROJECT_ROOT + '/db/db.db',
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -100,7 +100,10 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'my_django.middleware.common.CommonMiddleware',
+    #'my_django.middleware.csrf.CsrfViewMiddleware',
     'my_django.contrib.sessions.middleware.SessionMiddleware',
+    #'django.template.context_processors.debug',
+    #'django.template.context_processors.request',
     'my_django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 

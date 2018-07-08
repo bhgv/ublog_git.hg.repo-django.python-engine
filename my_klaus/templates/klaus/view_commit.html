@@ -12,6 +12,8 @@
 
 {% block content %}
 
+{% if is_may_read %}
+
 <script src="/css/klaus/line-highlighter.js"></script>
 
 {% include "klaus/includes/header.inc.html" %}
@@ -115,4 +117,5 @@
     });
 </script>
 
+{% endif %}
 {% endblock %}
