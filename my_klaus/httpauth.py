@@ -102,6 +102,9 @@ class BaseHttpAuthMiddleware(object):
 
     def should_require_authentication(self, url):
         """ Returns True if we should require authentication for the URL given """
+        
+        #if (self.routes and any(route.match(url) for route in self.routes)):
+        #    print "route: %s" % (url,)
         return (not self.routes # require auth for all URLs
                 or any(route.match(url) for route in self.routes))
 

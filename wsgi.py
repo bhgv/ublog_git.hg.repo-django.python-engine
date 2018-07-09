@@ -57,9 +57,8 @@ def application(environ, start_response):
     #dulwich_wrapped_app = utils.ProxyFix(dulwich_wrapped_app)
     
     PATTERNS = [
-        r'^/([^/]*/)*(info/refs\?service=git-receive-pack)$',
-        #r'^/[^/]+/(info/refs\?service=git-receive-pack)$',
-        r'^/([^/]*/)*(info/refs\?service=git-upload-pack)$',
+        r'^/([^/]*/)*(info/refs\?service=git-receive-pack|git-receive-pack)$',
+        r'^/([^/]*/)*(info/refs\?service=git-upload-pack|git-upload-pack)$',
     ]
     dulwich_wrapped_app = httpauth.CiceroKlausUserHttpAuthMiddleware(
         wsgi_app=dulwich_wrapped_app,
