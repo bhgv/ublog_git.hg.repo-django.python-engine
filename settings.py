@@ -102,6 +102,7 @@ MIDDLEWARE_CLASSES = (
     'my_django.middleware.common.CommonMiddleware',
     #'my_django.middleware.csrf.CsrfViewMiddleware',
     'my_django.contrib.sessions.middleware.SessionMiddleware',
+    'my_django.contrib.messages.middleware.MessageMiddleware',
     #'django.template.context_processors.debug',
     #'django.template.context_processors.request',
     'my_django.contrib.auth.middleware.AuthenticationMiddleware',

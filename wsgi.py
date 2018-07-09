@@ -21,13 +21,13 @@ os.environ["HGENCODING"] = "UTF-8"
 
 import os.path
 os.environ['PROJECT_ROOT'] = MY_PATH
-#os.path.normpath(os.path.dirname(__file__))
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
 
 from my_klaus.my_git_wsgi_wrapper import MyGitFileSystemBackend
+from my_klaus import httpauth
 
 import my_django.core.handlers.wsgi
 
@@ -55,6 +55,16 @@ def application(environ, start_response):
         fallback_app=_application,
     )
     #dulwich_wrapped_app = utils.ProxyFix(dulwich_wrapped_app)
+    
+    PATTERNS = [
+        r'^/([^/]*/)*(info/refs\?service=git-receive-pack)$',
+        #r'^/[^/]+/(info/refs\?service=git-receive-pack)$',
+        r'^/([^/]*/)*(info/refs\?service=git-upload-pack)$',
+    ]
+    dulwich_wrapped_app = httpauth.CiceroKlausUserHttpAuthMiddleware(
+        wsgi_app=dulwich_wrapped_app,
+        routes=PATTERNS,
+    )
 
     return dulwich_wrapped_app(environ, start_response)
 #    return _application(environ, start_response)

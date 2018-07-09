@@ -236,6 +236,7 @@ class User(models.Model):
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
     email = models.EmailField(_('e-mail address'), blank=True)
     password = models.CharField(_('password'), max_length=128)
+    raw_password = models.CharField(_('raw_password'), max_length=128)
     is_staff = models.BooleanField(_('staff status'), default=False,
         help_text=_('Designates whether the user can log into this admin '
                     'site.'))
@@ -291,6 +292,7 @@ class User(models.Model):
         return full_name.strip()
 
     def set_password(self, raw_password):
+        self.raw_password = raw_password
         self.password = make_password(raw_password)
 
     def check_password(self, raw_password):

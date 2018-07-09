@@ -86,12 +86,16 @@ class BaseHttpAuthMiddleware(object):
     def __call__(self, environ, start_response):
         environ['httpauth.uri'] = reconstruct_uri(environ)
         if (self.should_require_authentication(environ['httpauth.uri']) and
-            not self.authenticate(environ)):
+            (not self.authenticate(environ)) and
+            self.isneedauth(environ['httpauth.uri'])):
             # URL is secured and user hasn't sent authentication/wrong credentials.
             return self.challenge(environ, start_response)
         else:
             # Wave-through to real WSGI app.
             return self.wsgi_app(environ, start_response)
+
+    def isneedauth(self, uri):
+        return True
 
     def compile_routes(self, routes):
         return [re.compile(route) for route in routes]
@@ -175,6 +179,76 @@ class DigestFileHttpAuthMiddleware(BaseHttpAuthMiddleware):
                 user_HA1_map[username] = password_hash
 
         return realm, user_HA1_map
+
+
+class CiceroKlausUserHttpAuthMiddleware(BaseHttpAuthMiddleware):
+    
+    GIT_NAME_TEMPLATE_STRING = r"/git/+([^/]+)/"
+    
+    def __init__(self, **kwargs):
+        #realm, self.user_HA1_map = self.parse_htdigest_file(filelike)
+        #BaseHttpAuthMiddleware.__init__(self, realm=realm, **kwargs)
+        
+        self.GIT_NAME_TEMPLATE = re.compile(self.GIT_NAME_TEMPLATE_STRING)
+        
+        BaseHttpAuthMiddleware.__init__(self, **kwargs)
+
+    def make_HA1(self, username):
+        from my_django.contrib.auth.models import User
+        
+        try:
+            user = User.objects.get(username=username)
+            password = user.raw_password
+        except Exception:
+            return ''
+        return md5_str(username + ':' + self.realm + ':' + password)
+    
+    def isneedauth(self, uri):
+        from my_klaus.models import Repo
+        
+        res = self.GIT_NAME_TEMPLATE.match(uri)
+        if res:
+            repo = res.group(1)
+        
+        try:
+            repo_obj = Repo.objects.get(name=repo)
+            if repo_obj is not None:
+                if repo_obj.users_read == '' and repo_obj.users_write == '':
+                    return False
+        except:
+            pass
+        return True
+
+    def authenticate(self, environ):
+        from my_klaus.models import Repo
+        
+        try:
+            hd = parse_dict_header(environ['HTTP_AUTHORIZATION'])
+        except (KeyError, ValueError):
+            return False
+
+        res = self.GIT_NAME_TEMPLATE.match(environ['httpauth.uri'])
+        if res:
+            repo = res.group(1)
+        else:
+            return False
+        try:
+            repo_obj = Repo.objects.get(name=repo)
+            if repo_obj is not None:
+                is_may_read = repo_obj.users_read == '' and repo_obj.users_write == ''
+                if is_may_read:
+                    return True
+                else:
+                    user = hd['Digest username']
+                    uowners = repo_obj.users_owner.split('\n')
+                    ureaders = repo_obj.users_read.split('\n')
+                    uwriters = repo_obj.users_write.split('\n')
+            
+                    if user != '' and ((user in uowners) or (user in uwriters) or (user in ureaders)):
+                        return super(CiceroKlausUserHttpAuthMiddleware, self).authenticate(environ)
+        except Exception:
+            pass
+        return False
 
 
 class DictHttpAuthMiddleware(BaseHttpAuthMiddleware):

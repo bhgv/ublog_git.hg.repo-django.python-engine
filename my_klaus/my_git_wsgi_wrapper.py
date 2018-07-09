@@ -1,7 +1,6 @@
 import os, sys
 
 from my_django.conf import settings
-from my_klaus import httpauth
 
 from my_dulwich.errors import (
     ApplyDeltaError,

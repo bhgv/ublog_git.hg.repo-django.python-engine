@@ -53,7 +53,7 @@ class RepoListView(KlausTemplateView):
             repo_obj = Repo.objects.get(url=repo)
             try:
                 if repo_obj is not None:
-                    is_may_read = repo_obj.users_owner == '' and repo_obj.users_read == '' and repo_obj.users_write == ''
+                    is_may_read = repo_obj.users_read == '' and repo_obj.users_write == ''
                     if not is_may_read:
                         uowners = repo_obj.users_owner.split('\n')
                         ureaders = repo_obj.users_read.split('\n')
@@ -106,7 +106,7 @@ class BaseRepoView(KlausTemplateView):
         
         try:
             if repo_obj is not None:
-                is_may_read = repo_obj.users_owner == '' and repo_obj.users_read == '' and repo_obj.users_write == ''
+                is_may_read = repo_obj.users_read == '' and repo_obj.users_write == ''
                 if not is_may_read:
                     uowners = repo_obj.users_owner.split('\n')
                     ureaders = repo_obj.users_read.split('\n')
