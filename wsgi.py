@@ -8,8 +8,8 @@ sys.path.append(MY_PATH)
 sys.stdout = sys.stderr
 
 # Uncomment to send python tracebacks to the browser if an error occurs:
-import cgitb
-cgitb.enable()
+#import cgitb
+#cgitb.enable()
 
 # If you'd like to serve pages with UTF-8 instead of your default
 # locale charset, you can do so by uncommenting the following lines.

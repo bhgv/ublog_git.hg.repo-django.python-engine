@@ -264,12 +264,18 @@ class RepoManager(object):
     def add_repo(cls, path):
         fpath = FancyRepo(path)
         try:
-            db = models.Repo.objects.get(url=fpath)
+            repo = models.Repo.objects.get(url=fpath)
         except Exception:
-            models.Repo.objects.create(name=fpath.name, url=fpath)
+            try:
+                repo = models.Repo.objects.get(name=fpath.name)
+                repo.url = fpath
+                repo.save()
+            except Exception:
+                models.Repo.objects.create(name=fpath.name, url=fpath)
 
         try:
-            db = models.Repo.objects.get(url=fpath)
+            if repo is None:
+                repo = models.Repo.objects.get(url=fpath)
             cls._repos.append(fpath)
         except Exception:
             pass
