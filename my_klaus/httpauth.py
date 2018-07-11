@@ -242,14 +242,18 @@ class CiceroKlausUserHttpAuthMiddleware(BaseHttpAuthMiddleware):
                 if is_may_read:
                     return True
                 else:
+                    user_obj = None
+                    profile = None
                     user = hd['Digest username']
                     if user is None or user == '':
                         return False
-
-                    from cicero.models import Profile
                     
-                    user_obj = Profile.objects.get(user=user)
-                    profile = user_obj.cicero_profile
+                    from my_django.contrib.auth.models import User
+                    try:
+                        user_obj = User.objects.get(username__exact=user)
+                        profile = user_obj.cicero_profile
+                    except:
+                        return False
                     
                     is_banned = profile.is_banned
                     if is_banned:
