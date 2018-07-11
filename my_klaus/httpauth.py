@@ -243,11 +243,28 @@ class CiceroKlausUserHttpAuthMiddleware(BaseHttpAuthMiddleware):
                     return True
                 else:
                     user = hd['Digest username']
+                    if user is None or user == '':
+                        return False
+
+                    from cicero.models import Profile
+                    
+                    user_obj = Profile.objects.get(user=user)
+                    profile = user_obj.cicero_profile
+                    
+                    is_banned = profile.is_banned
+                    if is_banned:
+                        return False
+                    
+                    is_superuser = profile.user.is_superuser
+                    is_moderator = profile.moderator
+                    if is_superuser or is_moderator:
+                        return super(CiceroKlausUserHttpAuthMiddleware, self).authenticate(environ)
+
                     uowners = repo_obj.users_owner.split('\n')
                     ureaders = repo_obj.users_read.split('\n')
                     uwriters = repo_obj.users_write.split('\n')
             
-                    if user != '' and ((user in uowners) or (user in uwriters) or (user in ureaders)):
+                    if (user in uowners) or (user in uwriters) or (user in ureaders):
                         return super(CiceroKlausUserHttpAuthMiddleware, self).authenticate(environ)
         except Exception:
             pass

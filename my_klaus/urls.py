@@ -2,7 +2,7 @@
 from my_django.conf.urls import url
 
 from my_klaus import views
-from my_klaus.views_comment import post_comment,clone_repo
+from my_klaus.views_comment import post_comment,clone_repo,update_settings
 
 # TODO: These regexps are probably not going to cover all the cases
 repo = r'(?P<repo>[\w\.\-_]+)'
@@ -37,4 +37,9 @@ urlpatterns = [
 
     url(r'^' + repo + '/commit/' + rev + '/$',
         views.commit, name=views.CommitView.view_name),
+
+    url(r'^' + repo + '/settings/$',
+        views.settings, name=views.SettingsView.view_name),
+    url(r'^' + repo + '/settings/update_settings/$', update_settings, name='update_settings'),
+
 ]

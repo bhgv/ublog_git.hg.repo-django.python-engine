@@ -49,7 +49,7 @@ Repository list
     <script>
             function add_repo() {
                 var repo_url = document.getElementById("repo_url").value;
-		alert(repo_url);
+		//alert(repo_url);
                 console.log(repo_url);
                 $.post('/git/add_repo/', {
                     'repo_url': repo_url,

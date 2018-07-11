@@ -34,6 +34,15 @@
 </span>
 
 
+{% if not is_settings %}
+
+{% if is_owner %}
+&nbsp;&nbsp;
+<span>
+[&nbsp;<a href="{% url 'klaus:history' repo=repo.name %}settings/">Settings</a>&nbsp;]
+</span>
+{% endif %}
+
 <span class=branch-selector>
     <span>{{ rev|shorten_sha1 }}</span>
     <div>
@@ -55,6 +64,7 @@
         {% endif %}
     </div>
 </span>
+{% endif %}
 
 </div>
 

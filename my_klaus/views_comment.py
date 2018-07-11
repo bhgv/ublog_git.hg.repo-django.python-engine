@@ -18,9 +18,6 @@ def post_redirect(request):
 def login_required(func):
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated():
-            #from django.template import RequestContext
-            #from my_django.contrib.auth.views import login
-            #return login(RequestContext(request))
             return HttpResponse(u'You should login first!')
         return func(request, *args, **kwargs)
     return wrapper
@@ -79,5 +76,43 @@ def clone_repo(request):
     fresh_repo_list()
     repo_name = repo_url.split('/')[-1][:-4]
     Repo.objects.create(name=repo_name,url=repo_url)
+    #return HttpResponse('ok')
+    return HttpResponseRedirect(post_redirect(request))
+
+
+@csrf_exempt
+@login_required
+def update_settings(request, *args, **kwargs):
+    data = request.POST
+    owners = data['perm_owners']
+    readers = data['perm_readers']
+    writers = data['perm_writers']
+    
+    repo_url = data['repo_url'] # or 
+    repo_name = kwargs['repo']
+    try:
+        from cicero.models import Profile
+        
+        repo_obj = Repo.objects.get(name=repo_name)
+
+        profile = request.user.cicero_profile
+        
+        is_banned = profile.is_banned
+        if is_banned:
+            return HttpResponseRedirect(post_redirect(request))
+        
+        is_superuser = profile.user.is_superuser
+        is_moderator = profile.moderator
+
+        uowners = repo_obj.users_owner.split('\n')
+        
+        if is_superuser or is_moderator or (user in uowners):
+            repo_obj.users_owner = owners
+            repo_obj.users_read = readers
+            repo_obj.users_write = writers
+            repo_obj.save()
+            
+    except:
+        pass
     #return HttpResponse('ok')
     return HttpResponseRedirect(post_redirect(request))

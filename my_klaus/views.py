@@ -89,6 +89,7 @@ class BaseRepoView(KlausTemplateView):
 
     def get_context_data(self, **ctx):
         is_may_read = False
+        is_owner = False
         context = super(BaseRepoView, self).get_context_data(**ctx)
         repo = RepoManager.get_repo(self.kwargs['repo'])
         #repo_url = repo.get_config()._values[(b'remote',b'origin')][b'url'].decode()
@@ -103,21 +104,41 @@ class BaseRepoView(KlausTemplateView):
             repo_obj = Repo.objects.get(url=repo_url)
         else:
             repo_obj = Repo.objects.get(url=repo) #None
+            repo_url = repo
         
         try:
             if repo_obj is not None:
-                is_may_read = repo_obj.users_read == '' and repo_obj.users_write == ''
+                user = self.request.user.username
+                
+                profile = None
+                is_superuser = False
+                is_moderator = False
+                is_banned = False
+                
+                try:
+                    profile = self.request.user.cicero_profile
+                    is_superuser = profile.user.is_superuser
+                    is_moderator = profile.moderator
+                    is_banned = profile.is_banned
+                except:
+                    pass
+                    
+                is_owner = is_superuser or is_moderator
+                is_may_read = is_owner or (repo_obj.users_read == '' and repo_obj.users_write == '')
                 if not is_may_read:
                     uowners = repo_obj.users_owner.split('\n')
                     ureaders = repo_obj.users_read.split('\n')
                     uwriters = repo_obj.users_write.split('\n')
-                
-                    user = self.request.user.username
-                    is_may_read = user != '' and ((user in uowners) or (user in uwriters) or (user in ureaders))
+                    
+                    print "prof=%r, is_banned=%r, is_moder=%r, is_super=%r" % (profile, is_banned, is_moderator, is_superuser,)
+                    is_may_read = (not is_banned) and user != '' and ((user in uowners) or (user in uwriters) or (user in ureaders))
+                    is_owner = (not is_banned) and user != '' and (user in uowners)
                 if not is_may_read:
                     context.update({
                         'view': self.view_name,
-                        'is_may_read': is_may_read,
+                        'is_may_read': False,
+                        'is_owner': False,
+                        'is_settings': False,
                     })
                     context['csid'] = context['commit'].id.decode()
                     return context
@@ -150,6 +171,8 @@ class BaseRepoView(KlausTemplateView):
             'blob_or_tree': blob_or_tree,
             'subpaths': list(subpaths(path)) if path else None,
             'is_may_read': is_may_read,
+            'is_owner': is_owner,
+            'is_settings': False,
         })
         context['csid'] = context['commit'].id.decode()
         return context
@@ -319,8 +342,30 @@ class CommitView(BaseRepoView):
         return context
 
 
+class SettingsView(BaseRepoView):
+    template_name = 'klaus/view_settings.html'
+    view_name = 'settings'
+
+    def get_context_data(self, **ctx):
+        context = super(SettingsView, self).get_context_data(**ctx)
+        repo_url = context['repo_url']
+        try:
+            repo_obj = Repo.objects.get(url=repo_url)
+            
+            context['perm_owners'] = repo_obj.users_owner
+            context['perm_readers'] = repo_obj.users_read
+            context['perm_writers'] = repo_obj.users_write
+        except:
+            pass
+        context.update({
+            'is_settings': True,
+        })
+        return context
+
+
 repo_list = RepoListView.as_view()
 history = HistoryView.as_view()
 commit = CommitView.as_view()
 blob = BlobView.as_view()
 raw = RawView.as_view()
+settings = SettingsView.as_view()
