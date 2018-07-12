@@ -187,12 +187,14 @@ class DigestFileHttpAuthMiddleware(BaseHttpAuthMiddleware):
 class CiceroKlausUserHttpAuthMiddleware(BaseHttpAuthMiddleware):
     
     GIT_NAME_TEMPLATE_STRING = r"/git/+([^/]+)/"
+    GIT_COMMIT_MSG_TEMPLATE_STRING = r'^/([^/]*/)*(info/refs\?service=git-receive-pack|git-receive-pack)$'
     
     def __init__(self, **kwargs):
         #realm, self.user_HA1_map = self.parse_htdigest_file(filelike)
         #BaseHttpAuthMiddleware.__init__(self, realm=realm, **kwargs)
         
         self.GIT_NAME_TEMPLATE = re.compile(self.GIT_NAME_TEMPLATE_STRING)
+        self.GIT_COMMIT_MSG_TEMPLATE = re.compile(self.GIT_COMMIT_MSG_TEMPLATE_STRING)
         
         BaseHttpAuthMiddleware.__init__(self, **kwargs)
 
@@ -267,9 +269,13 @@ class CiceroKlausUserHttpAuthMiddleware(BaseHttpAuthMiddleware):
                     uowners = repo_obj.users_owner.split('\n')
                     ureaders = repo_obj.users_read.split('\n')
                     uwriters = repo_obj.users_write.split('\n')
-            
-                    if (user in uowners) or (user in uwriters) or (user in ureaders):
-                        return super(CiceroKlausUserHttpAuthMiddleware, self).authenticate(environ)
+                    
+                    if self.GIT_COMMIT_MSG_TEMPLATE.match(environ['httpauth.uri']):
+                        if (user in uowners) or (user in uwriters):
+                            return super(CiceroKlausUserHttpAuthMiddleware, self).authenticate(environ)
+                    else:
+                        if (user in uowners) or (user in uwriters) or (user in ureaders):
+                            return super(CiceroKlausUserHttpAuthMiddleware, self).authenticate(environ)
         except Exception:
             pass
         return False

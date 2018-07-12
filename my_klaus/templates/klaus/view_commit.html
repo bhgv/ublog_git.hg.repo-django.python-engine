@@ -3,12 +3,8 @@
 {% load url from future %}
 
 {% load klaus %} 
-{% block extra_githeader %}{% endblock %} 
 
-{# no branch selector on commits #} 
-
-{% block title %} Commit {{ rev }} - {{ repo.name }} 
-{% endblock %} 
+{% block title %} Commit {{ rev }} - {{ repo.name }} {% endblock %} 
 
 {% block content %}
 

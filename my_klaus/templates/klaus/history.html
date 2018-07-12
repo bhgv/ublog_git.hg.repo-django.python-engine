@@ -4,12 +4,7 @@
 
 {% load klaus %} 
 
-{% block title %} 
-History of {% if path %}{{ path }} - {% endif %} 
-
-{{ block.super }} 
-
-{% endblock %} 
+{% block title %}History of {% if path %}{{ path }} - {% endif %} {{ block.super }} {% endblock %} 
 
 {% block content %} 
 
