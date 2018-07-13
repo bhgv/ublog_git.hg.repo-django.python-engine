@@ -53,9 +53,9 @@ def user_etag(request, *args, **kwargs):
     '''
     if (not request.user.is_authenticated()) :
         return '"None"'
-    print "tst1 %s\n" % (str(request.user),)
-    print "tst2 %s\n" % (request.user.cicero_profile,)
-    print "tst3 %s\n" % (str(request.user.cicero_profile.read_articles),)
+#    print "tst1 %s\n" % (str(request.user),)
+#    print "tst2 %s\n" % (request.user.cicero_profile,)
+#    print "tst3 %s\n" % (str(request.user.cicero_profile.read_articles),)
 #    print "tst %s\n" % (str(request.user.cicero_profile.read_articles),)
 
     return md5.new(str(request.user.cicero_profile.read_articles)).hexdigest()
