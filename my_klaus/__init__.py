@@ -10,6 +10,10 @@ if (not os.path.isdir(REPO_HOME)) or (not os.path.isdir(REPO_HOME + '/.git')):
     from my_sh import sh
     from my_sh.sh.contrib import git
     
+    from my_django.contrib.auth.models import User
+    user = User.objects.get(is_superuser=1)
+    username = user.username
+
     repo_path = REPO_HOME
     #sh.mkdir(repo_path)
     sh.ln('-sf', PROJECT_ROOT, repo_path)
@@ -20,13 +24,17 @@ if (not os.path.isdir(REPO_HOME)) or (not os.path.isdir(REPO_HOME + '/.git')):
     git.add('-f', 'repo/hg/.noremove')
     git.add('.gitignore')
     git.add('.')
-    git.commit('-m', 'first-commit')
+    try:
+        git.commit('-m', 'first-commit')
+    except:
+        git.config('--global', 'user.email', user.email)
+        git.config('--global', 'user.name', username)
+        try:
+            git.commit('-m', 'first-commit')
+        except:
+            pass
     try:
         from my_klaus.models import Repo
-        from my_django.contrib.auth.models import User
-
-        user = User.objects.get(is_superuser=1)
-        username = user.username
         try:
             repo = Repo.objects.get(name=self_repo_name)
             repo.users_owner=username
