@@ -1,0 +1,4 @@
+*.pyc
+/db/*
+/repo/git/*
+/repo/hg/*

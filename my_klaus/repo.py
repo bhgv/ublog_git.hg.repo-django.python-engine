@@ -292,7 +292,7 @@ def get_repo_list(path):
     dir_list = os.listdir(path)
     for one in dir_list:
         repo_path = path + os.sep + one
-        if os.path.isdir(repo_path):
+        if os.path.isdir(repo_path) and os.path.isdir(repo_path + os.sep + '.git'):
             yield repo_path
 
 def fresh_repo_list():
