@@ -48,17 +48,34 @@ def application(environ, start_response):
     dulwich_backend = MyGitFileSystemBackend(
         path
     )
+    from my_klaus.my_dulwich_handlers import my_ReceivePackHandler
+    handlers = {
+        b'git-receive-pack': my_ReceivePackHandler,
+    }
     # Dulwich takes care of all Git related requests/URLs
     # and passes through everything else to klaus
     dulwich_wrapped_app = my_dulwich.web.make_wsgi_chain(
         backend=dulwich_backend,
         fallback_app=_application,
+        handlers=dict(handlers),
     )
     #dulwich_wrapped_app = utils.ProxyFix(dulwich_wrapped_app)
     
     PATTERNS = [
         r'^/([^/]*/)*(info/refs\?service=git-receive-pack|git-receive-pack)$',
         r'^/([^/]*/)*(info/refs\?service=git-upload-pack|git-upload-pack)$',
+
+        r'^/([^/]*/)*(HEAD)$',
+        r'^/([^/]*/)*(info/refs.*)$',
+        r'^/([^/]*/)*(objects/info/alternates)$',
+        r'^/([^/]*/)*(objects/info/http-alternates)$',
+        r'^/([^/]*/)*(objects/info/packs)$',
+        r'^/([^/]*/)*(objects/([0-9a-f]{2})/([0-9a-f]{38}))$',
+        r'^/([^/]*/)*(objects/pack/pack-([0-9a-f]{40})\\.pack)$',
+        r'^/([^/]*/)*(objects/pack/pack-([0-9a-f]{40})\\.idx)$',
+
+#      ('POST', re.compile('/git-upload-pack$')): handle_service_request,
+#      ('POST', re.compile('/git-receive-pack$')): handle_service_request,
     ]
     dulwich_wrapped_app = httpauth.CiceroKlausUserHttpAuthMiddleware(
         wsgi_app=dulwich_wrapped_app,
