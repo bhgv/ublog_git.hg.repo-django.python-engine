@@ -4,7 +4,7 @@ Your own github!
 Features:
 ---------
 * uBlog/uForum (multiple text/table/image formatters. stylized to [cat-v.org](http://cat-v.org/)),
-* full functional Public and Private Git multi-repo (colorised/structured Web Wiew, remote Clone, Commit, Authentication etc),
+* full functional Public and Private Git multi-repo hosting (colorised/structured Web-Wiew, remote Clone, Commit, Authentication etc),
 * Mercurial (Hg) (currently in the work),
 * may be used as locally and as on a server in the internet,
 * Git based update of the code of the engine (`[this-site-url]/git/.self`),
