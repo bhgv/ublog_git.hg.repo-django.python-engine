@@ -30,14 +30,24 @@
   
 
   <table>
-    <caption><h2>Включить еще посты</h2></caption>
+    <caption><b>Включить еще посты</b></caption>
     {% for id, article in form.fields.articles.choices %}
     <tr><td>
-    <table>
-     <tr><td><input type="checkbox" name="articles" value="{{ id }}"></td></tr>
-     <tr><td>{% if article.from_guest %}{{ article.guest_name }}{% else %}{{ article.author.user }}{% endif %}</td></tr>
-     <tr><td>{{ article.html|truncatewords_html:30 }}</td></tr>
-    </table>
+     <table style="margin-top:1em;">
+     <tr><td style="border-bottom:1px dotted olive;">
+      <span>
+       <input type="checkbox" name="articles" value="{{ id }}">&nbsp;</input>
+      </span>
+      <span>
+       [ author:</span>&nbsp;
+        <span style="color:navy;"><i>{% if article.from_guest %}{{ article.guest_name }}{% else %}{{ article.author.user }}{% endif %}</i></span>
+       ]
+      </span>
+     </td></tr><tr><td>
+      {%comment%}{{ article.html|truncatewords_html:30 }}{%endcomment%}
+      {{ article.html }}
+     </td></tr>
+     </table>
     </td></tr>
     {% endfor %}
   </table>
